@@ -1,4 +1,4 @@
-//Express setup
+//Express server setup
 const express = require("express");
 const app = express();
 //Env Port or 8080
