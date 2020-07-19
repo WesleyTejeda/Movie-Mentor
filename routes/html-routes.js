@@ -1,5 +1,5 @@
-var db = require("../models");
-const path = require("path");
+// var db = require("../models");
+// const path = require("path");
 
 //Build html routes
 
