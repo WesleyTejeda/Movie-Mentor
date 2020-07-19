@@ -13,7 +13,8 @@ module.exports = function(sequelize, DataTypes) {
         Watchlist.belongsTo(models.User, {
             foreignKey: {
                 allowNull: false
-            }
+            },
+            onDelete: "cascade"
         });
     };
 
