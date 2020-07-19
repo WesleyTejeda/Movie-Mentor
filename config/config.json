@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "your_password",
-    "database": "database_nameTBD",
+    "password": "<password>",
+    "database": "movie_mentor",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
