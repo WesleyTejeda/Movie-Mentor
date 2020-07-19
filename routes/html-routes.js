@@ -1,4 +1,4 @@
-// var db = require("../models");
+var db = require("../models");
 const path = require("path");
 
 //Build html routes
@@ -10,6 +10,19 @@ module.exports = function(app){
     })
     //On /user route return user.html
     app.get("/user", (req, res) => {
-        res.render("user");
-    })
+        if (!(req.session && req.session.userId))
+            return res.redirect("/");
+
+        User.findById(req.session.userId, (err, user) => {
+            if (err) {
+                return next(err);
+            }
+            if (!user) {
+                return res.redirect("/");
+            }
+
+            res.render("user");
+        });
+        // res.render("user");
+    });
 }
