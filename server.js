@@ -3,16 +3,15 @@ const express = require("express");
 const app = express();
 //Env Port or 8080
 let PORT = process.env.PORT || 8080;
-//Using handlebars
-var exphbs = require("express-handlebars");
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
+
 //.env
 require("dotenv").config();
 //Moment
 const moment = require("moment");
 //Body parser
 const bodyParser = require('body-parser')
+//Bcrypt
+const bcrypt = require("bcryptjs");
 
 //Import db when built
 var db = require("./models");
@@ -31,7 +30,10 @@ app.use(sessions({
     secret: process.env.cookieSecret,
     duration: 20 * 60 * 1000 //20 minutes
 }))
-
+//Using handlebars
+var exphbs = require("express-handlebars");
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 //Import routes HERE
 require("./routes/html-routes")(app);
 require("./routes/watchlist-api-routes")(app);
