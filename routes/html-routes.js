@@ -10,19 +10,19 @@ module.exports = function(app){
     })
     //On /user route return user.html
     app.get("/user", (req, res) => {
-        if (!(req.session && req.session.userId))
-            return res.redirect("/");
+        // if (!(req.session && req.session.userId))
+        //     return res.redirect("/");
 
-        User.findById(req.session.userId, (err, user) => {
-            if (err) {
-                return next(err);
-            }
-            if (!user) {
-                return res.redirect("/");
-            }
+        // User.findById(req.session.userId, (err, user) => {
+        //     if (err) {
+        //         return next(err);
+        //     }
+        //     if (!user) {
+        //         return res.redirect("/");
+        //     }
 
-            res.render("user");
-        });
-        // res.render("user");
+        //     res.render("user");
+        // });
+        res.render("user");
     });
 }

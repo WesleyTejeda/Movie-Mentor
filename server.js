@@ -24,13 +24,13 @@ app.use(express.json());
 app.use(express.static("public"));
 
 //Use sessions
-const sessions = require("client-sessions");
+// const sessions = require("client-sessions");
 
-app.use(sessions({
-    cookieName: "session",
-    secret: process.env.cookieSecret,
-    duration: 20 * 60 * 1000 //20 minutes
-}))
+// app.use(sessions({
+//     cookieName: "session",
+//     secret: process.env.cookieSecret,
+//     duration: 20 * 60 * 1000 //20 minutes
+// }))
 
 //Import routes HERE
 require("./routes/html-routes")(app);
