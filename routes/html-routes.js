@@ -9,7 +9,7 @@ module.exports = function(app){
         res.render("index");
     })
     //On /user route return user.html
-    app.get("/user",(req, res) => {
+    app.get("/user", (req, res) => {
         // if (!(req.session && req.session.userId))
         //     return res.redirect("/");
 
