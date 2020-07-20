@@ -1,1 +1,8 @@
 /* Styles */
+
+.popOut {
+    position: absolute;
+    left: auto;
+    top: auto;
+    z-index: 100;
+}
