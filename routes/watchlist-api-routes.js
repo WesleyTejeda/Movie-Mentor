@@ -17,6 +17,9 @@ module.exports = function(app){
             username: req.session.userId
          }
       }).then(results => {
+         if(results === []){
+            res.json({message: "No results"})
+         }
          //returns all results in an array of objects
          res.json(results);
       })
