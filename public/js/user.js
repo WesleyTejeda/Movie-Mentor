@@ -17,18 +17,18 @@ $(document).ready(function() {
 
     var getData = (title) => {
         let apiKey = "3699bcfd1aa3d5642b631dafd0a6d76e"
-        let searchUrl = "https://api.themoviedb.org/3/search/multi?api_key=" + apiKey + "&language=en-US&query=" + title + "&page=1&include_adult=false";
+        let queryUrl = "https://api.themoviedb.org/3/search/multi?api_key=" + apiKey + "&language=en-US&query=" + title + "&page=1&include_adult=false";
 
         title = title.replace(/(, )/g, "+");
 
         $.ajax({
-            url: searchUrl,
+            url: queryUrl,
             method: "GET"
         }).then((result) => {
-            var result = results[0];
+            var result = result.results[0];
 
             var searchObj = {
-                image: result.poster_path,
+                image: "https://image.tmdb.org/t/p/w200" + result.poster_path,
                 resultTitle: result.title,
                 popularity: result.popularity,
                 description: result.overview,
@@ -45,7 +45,6 @@ $(document).ready(function() {
             renderResults(result);
         });
     }
-
 
     $(searchBtn).on("click", function () {
         getData(searchText.val());

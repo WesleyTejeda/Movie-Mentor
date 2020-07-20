@@ -1,1 +1,18 @@
 /* Styles */
+.card-group {
+    width: 90%;
+    height: auto;
+    margin: 0 auto;
+    float: none;
+    margin-top: 20px;
+}
+
+#newCard {
+    margin: 20px;
+}
+
+#cardImage {
+    width: 100%;
+    height: auto;
+}
+
