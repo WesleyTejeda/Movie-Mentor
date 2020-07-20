@@ -14,16 +14,16 @@ module.exports = function(app){
             where: {
                 username: req.body.username
             }
-        }).then( (err, user) => {
+        }).then(user => {
             console.log(user);
-            console.log(user["password"]);
+            // console.log(user["password"]);
 
-            if (!user)
+            if (user === null)
                 res.status(500).json({message: "Could not find an account with that username or password. Please log in again with the correct credentials."});
             else {
                 //Compare hashed password to database hashed pw
-                // let login = bcrypt.compareSync(req.body.password, user["password"])
-                if(user["password"] !== req.body.password){
+                let login = bcrypt.compareSync(req.body.password, user.password);
+                if(!login){
                     res.json({message: "Incorrect password. Please re-enter credentials"})
                 }
                 //Save session id
@@ -51,14 +51,14 @@ module.exports = function(app){
             }
             else {
                 let time = moment().format("YYYY-MM-DD");
-                // let password = req.body.password;
-                // let hash = bcrypt.hashSync(req.body.password);
+                let hashed = bcrypt.hashSync(req.body.password);
                 let userCredentials = {
                     username: req.body.username,
-                    password: req.body.password,
+                    password: hashed,
                     createdAt: time,
                     updatedAt: time
                 };
+                //Post to DB table the new users username and password and then login user and authenticate them.
                 db.User.create(userCredentials).then(created => {
                     res.json(created);
                 }).catch(err => {
@@ -69,6 +69,5 @@ module.exports = function(app){
         }).catch(err => {
             res.status(501).json({message: err});
         })
-        //Post to DB table the new users username and password and then login user and authenticate them.
     })
 }
