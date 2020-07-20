@@ -1,3 +1,5 @@
 $("#logoutModal").on("click", function(event) {
-    $.get("/", function())
+    $.get("/", function() {
+        
+    })
  })

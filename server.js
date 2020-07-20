@@ -1,17 +1,25 @@
 //Express server setup
 const express = require("express");
 const app = express();
-//Env Port or 8080
 let PORT = process.env.PORT || 8080;
-
+<<<<<<< HEAD
+//Using handlebars
+var exphbs = require("express-handlebars");
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 //.env
+=======
+>>>>>>> 2689bde6a5c77e558b3bff0dee616d4fc3af628c
 require("dotenv").config();
-//Moment
+
 const moment = require("moment");
-//Body parser
 const bodyParser = require('body-parser')
-//Bcrypt
+<<<<<<< HEAD
+=======
 const bcrypt = require("bcryptjs");
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+>>>>>>> 2689bde6a5c77e558b3bff0dee616d4fc3af628c
 
 //Import db when built
 var db = require("./models");
@@ -23,17 +31,29 @@ app.use(express.json());
 app.use(express.static("public"));
 
 //Use sessions
+<<<<<<< HEAD
 // const sessions = require("client-sessions");
 
+// app.use(sessions({
+//     cookieName: "session",
+//     secret: process.env.cookieSecret,
+//     duration: 20 * 60 * 1000 //20 minutes
+// }))
+=======
+const sessions = require('client-sessions');
 app.use(sessions({
     cookieName: "session",
     secret: process.env.cookieSecret,
-    duration: 20 * 60 * 1000 //20 minutes
-}))
+    duration: 60 * 60 * 1000, // 60mins
+    activeDuration: 5 * 60 * 1000 // +5mins if about to expire
+}));
+
 //Using handlebars
 var exphbs = require("express-handlebars");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
+>>>>>>> 2689bde6a5c77e558b3bff0dee616d4fc3af628c
+
 //Import routes HERE
 require("./routes/html-routes")(app);
 require("./routes/watchlist-api-routes")(app);
