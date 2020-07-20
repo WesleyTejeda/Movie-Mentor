@@ -17,7 +17,7 @@
                                     <h4 class="modal-title">Please login with your username and password.</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <form>
+                                    <form class="login">
                                         <div class="form-group">
                                             <div class="form-group">
                                                 <label for="loginUsername">Username</label>
@@ -40,9 +40,9 @@
                 </li>
                 <li>
                     <button type="button" class="btn btn-info btn-lg p-1 m-2" data-toggle="modal"
-                        data-target="#loginModal">Register here!</button>
+                        data-target="#signUpModal">Register here!</button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <div class="modal fade" id="loginModal" role="dialog">
+                        <div class="modal fade" id="registerModal" role="dialog">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -51,17 +51,17 @@
                                         </h4>
                                     </div>
                                     <div class="modal-body">
-                                        <form>
+                                        <form class="signup">
                                             <div class="form-group">
                                                 <div class="form-group">
-                                                    <label for="registerUsername">Username</label>
-                                                    <input type="username" class="form-control" id="registerUsername"
+                                                    <label for="signUpUsername">Username</label>
+                                                    <input type="username" class="form-control" id="signUpUsername"
                                                         placeholder="Username is required">
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="registerPassword">Password</label>
-                                                <input type="password" class="form-control" id="registerPassword"
+                                                <label for="signUpPassword">Password</label>
+                                                <input type="password" class="form-control" id="signUpPassword"
                                                     placeholder="Password is required">
                                             </div>
                                             <div class="modal-footer">
