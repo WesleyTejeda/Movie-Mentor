@@ -1,10 +1,14 @@
 
 $(document).ready(function() {
 
-    $("#logoutModal").on("click", function (event) {
+    $("#logout").on("click", function (event) {
         event.preventDefault();
-        $.post("/logout", function () {
-            console.log("Logged out");
+        console.log("LOG OUT");
+        $.post("/logout").then(function (data, status, xhr) {
+            console.log(status, data, xhr.status);
+            if (xhr.status === 200){
+                window.location.replace("/");
+            }
         })
     })
 
@@ -47,10 +51,10 @@ $(document).ready(function() {
     }
 
 
-    $(searchBtn).on("click", function () {
-        getData(searchText.val());
-        searchText.val("");
-    });
+    // $(searchBtn).on("click", function () {
+    //     getData(searchText.val());
+    //     searchText.val("");
+    // });
 });
 
 renderResults = (newMovieData) => {
