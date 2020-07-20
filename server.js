@@ -20,13 +20,13 @@ app.use(express.json());
 app.use(express.static("public"));
 
 //Use sessions
-const sessions = require("client-sessions");
+const sessions = require('client-sessions');
 app.use(sessions({
     cookieName: "session",
     secret: process.env.cookieSecret,
-    duration: 20 * 60 * 1000, //20 minutes
-    activeDuration: 5 * 60 * 1000, //Extend 5mins if about to expire
-}))
+    duration: 60 * 60 * 1000, // 60mins
+    activeDuration: 5 * 60 * 1000 // +5mins if about to expire
+}));
 
 //Using handlebars
 var exphbs = require("express-handlebars");

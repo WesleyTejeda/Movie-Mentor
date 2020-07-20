@@ -1,5 +1,6 @@
 module.exports = (req, res, next) => {
-    if (!req.user)
+    console.log(req.session);
+    if (!(req.session && req.session.userId))
         return res.redirect("/");
     next();
 };

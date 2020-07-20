@@ -16,7 +16,8 @@ module.exports = function(app){
             }
         }).then(user => {
             console.log(user);
-            // console.log(user["password"]);
+            console.log(user["password"]);
+            console.log(user.username);
 
             if (user === null)
                 res.status(500).json({message: "Could not find an account with that username or password. Please log in again with the correct credentials."});
@@ -27,9 +28,9 @@ module.exports = function(app){
                     res.json({message: "Incorrect password. Please re-enter credentials"})
                 }
                 //Save session id
-                req.session.userId = user._id;
-                // res.redirect("/user");
-                res.status(300).json({message: "Logged in"});
+                req.session.userId = user.username;
+                res.redirect("/user");
+                // res.status(300).json({message: "Logged in"});
             }
         }).catch(err => {
             if (err)
@@ -39,6 +40,7 @@ module.exports = function(app){
 
     //Specify post for user sign up
     app.post("/api/signup", (req, res) => {
+        console.log(req.session, "signup");
         //Check if the username already exists
         db.User.findAll({
             where: {
@@ -60,7 +62,8 @@ module.exports = function(app){
                 };
                 //Post to DB table the new users username and password and then login user and authenticate them.
                 db.User.create(userCredentials).then(created => {
-                    res.json(created);
+                    // res.json(created);
+                    res.redirect("/user");
                 }).catch(err => {
                     if (err)
                         res.status(502).json(err);
