@@ -1,5 +1,6 @@
 //Build out functionality
 $(document).ready(function () {
+    const bcrypt = require("bcryptjs");
     var loginForm = $(".login");
     var signUpForm = $(".signup");
     var usernameInput = $("#loginUsername");
@@ -20,7 +21,7 @@ $(document).ready(function () {
       passwordInput.val("");
     });
     function loginUser(username, password) {
-      $.get("/api/login", {
+      $.post("/api/login", {
         username: username,
         password: password,
       })
@@ -47,6 +48,7 @@ $(document).ready(function () {
       passwordInput.val("");
     });
     function registerUser(username, password) {
+
       $.post("/api/signup", {
         username: username,
         password: password,
