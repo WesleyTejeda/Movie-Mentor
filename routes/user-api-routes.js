@@ -29,7 +29,7 @@ module.exports = function(app){
                 }
                 //Save session id
                 req.session.userId = user.username;
-                res.redirect("/user");
+                res.status(200).json({message: "Logged in"});
                 // res.status(300).json({message: "Logged in"});
             }
         }).catch(err => {
@@ -40,7 +40,7 @@ module.exports = function(app){
 
     //Specify post for user sign up
     app.post("/api/signup", (req, res) => {
-        console.log(req.session, "signup");
+        console.log(req.body);
         //Check if the username already exists
         db.User.findAll({
             where: {
@@ -63,7 +63,9 @@ module.exports = function(app){
                 //Post to DB table the new users username and password and then login user and authenticate them.
                 db.User.create(userCredentials).then(created => {
                     // res.json(created);
-                    res.redirect("/user");
+                    //Login the new user immediately then route them to users page
+                    req.session.userId = req.body.username;
+                    res.status(200).json({message: "Signed up and logged in"});
                 }).catch(err => {
                     if (err)
                         res.status(502).json(err);
