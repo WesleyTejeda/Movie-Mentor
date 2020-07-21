@@ -5,7 +5,11 @@
 
   ## Description
   
-  
+  In the busy world we live in, personal time to relax and simply enjoy a movie or tv show should not be undervalued. With seemingly limitless options to stream/view movies and tv shows, it can sometimes become overwhelming just to make a choice of what to watch. The Movie Mentor is here to help!
+
+  Just by entering a movie or tv show the user enjoys, they can receive a plethora of recommendations in a matter of seconds! Our recommendations possess vital information, including: rating, description, image, videos, viewer popularity  - and more! A focal point when creating this application certainly revolved around the user experience. 
+
+  Upon entering the site, the user will log in or sign up in order to receive custom recommendations. Anything the user would like to use for future reference, can be saved to their "Watchlist". Rather than using local storage to save the login information, we encryped  In order to achieve this functionality, bcrypt was used to securely hash the user's password information.
 
   ## Table of Contents
 
