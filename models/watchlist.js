@@ -10,8 +10,36 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false
         },
-        listId: {
+        popularity: {
             type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        description: {
+            type: DataTypes.TEXT,
+            allowNull: false
+        },
+        releaseDate: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        movieOrShow: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        genre: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        voteAvg: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        movieId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        country: {
+            type: DataTypes.STRING,
             allowNull: false
         }
     })
