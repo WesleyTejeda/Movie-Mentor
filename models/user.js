@@ -14,7 +14,9 @@ module.exports = function(sequelize, DataTypes) {
 
     //Associate user with watchlist, on deletion of user then delete their watchlist
     User.associate = function(models) {
-        User.hasMany(models.Watchlist);
+        User.hasMany(models.Watchlist, {
+            foreignKey: "UserId"
+        });
     };
     
     return User;

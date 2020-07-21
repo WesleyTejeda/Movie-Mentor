@@ -5,16 +5,23 @@ module.exports = function(sequelize, DataTypes) {
         listTitle: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        image: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        listId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     })
 
     //Associate the watchlist table to user
     Watchlist.associate = function(models) {
         Watchlist.belongsTo(models.User, {
-            foreignKey: {
-                allowNull: false
-            },
-            onDelete: "cascade"
+            foreignKey: "UserId",
+            onDelete: "cascade",
+            targetKey: 'id'
         });
     };
 
