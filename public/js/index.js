@@ -1,6 +1,5 @@
 //Build out functionality
 $(document).ready(function () {
-    const bcrypt = require("bcryptjs");
     var loginForm = $(".login");
     var signUpForm = $(".signup");
     var usernameInput = $("#loginUsername");
@@ -25,9 +24,8 @@ $(document).ready(function () {
         username: username,
         password: password,
       })
-        .then(function () {
-          window.location.replace("/users");
-          // If there's an error, log the error
+        .then(function (data, status, xhr) {
+          window.location.replace("/user")
         })
         .catch(function (err) {
           console.log(err);
@@ -53,8 +51,8 @@ $(document).ready(function () {
         username: username,
         password: password,
       })
-        .then(function (data) {
-          console.log("Signed up")
+        .then(function (data, status, xhr) {
+          window.location.replace("/user")
         })
         .catch(handleLoginErr);
     }

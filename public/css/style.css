@@ -1,18 +1,109 @@
 /* Styles */
-.card-group {
-    width: 90%;
-    height: auto;
-    margin: 0 auto;
-    float: none;
-    margin-top: 20px;
+.text-white {
+    color: white;
 }
 
-#newCard {
-    margin: 20px;
+.float-left {
+    float: left;
 }
 
-#cardImage {
+.darkBg {
+    background-color: black;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+.modal {
+    display: none;
+    position: fixed;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
     width: 100%;
-    height: auto;
-}
+    height: 100%;
+    overflow: auto; 
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+  }
+   
+  .modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+  }
+  
+  @-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+  }
+  
+  @keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+  }
+  
+  .close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .modal-header {
+    padding: 2px 16px;
+    background-color: black;
+    color: white;
+  }
+  
+  .modal-body {
+    padding: 2px 16px;
+    height: 100%;
+  }
 
+  .modal-body1 {
+    padding: 2px 16px;
+  }
+  
+  .modal-footer {
+    padding-bottom: 10px;
+    background-color: black;
+    color: white;
+  }
+
+  .searchModal {
+      margin-top: 40px;
+      margin-left: 20px;
+      margin-bottom: 40px;
+  }
+
+  .card-body:hover {
+    box-shadow: 5px 10px 8px 10px #888888;
+  }
+
+  .watchlistBtn {
+      color: white;
+      background-color: rgb(38, 180, 38);
+  }
+
+  .watchlistBtn:hover {
+    box-shadow: 0px 2px 26px 15px rgba(53,148,113,1);
+  }
