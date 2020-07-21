@@ -65,11 +65,12 @@ $(document).ready(async function() {
                 genre: result.genre_ids[0],
                 voteAvg: result.vote_average,
                 movieId: result.id,
-                country: result.origin_country[0]
+                country: (result.origin_country || "N/A")
             };
             console.log(searchObj);
             let type = result.media_type;
             let recommendedHtml = await getRecommended(type, result.id);
+            let videoSrc = await getVideos(type, result.id);
 
             //Append popup search below
             let searchHtml = 
@@ -87,6 +88,9 @@ $(document).ready(async function() {
                     <p>Release Date: ${searchObj.releaseDate}</p>
                     <p>Media Type: ${searchObj.movieOrShow}</p>
                     <button class="watchlistBtn"><i class="fas fa-plus"></i> Add to Watchlist</button>
+                    <iframe id="ytplayer" type="text/html" width="640" height="360"
+                    src="https://www.youtube.com/embed/${videoSrc}?autoplay=1"
+                    frameborder="0"></iframe>
                 </div>
             </div>
             <div class="row">${recommendedHtml}</div>`;
@@ -139,6 +143,21 @@ $(document).ready(async function() {
                 resolve(genreList);
             })
         })
+    }
+
+    function getVideos(type, id) {
+        return new Promise(resolve => {
+            $.get(`https://api.themoviedb.org/3/${type}/${id}/videos?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US`).then(results => {
+                let src = "";
+                for(let i=0; i < results.results.length; i++){
+                    if(results.results[i].type === "Trailer"){
+                        src = results.results[i].key;
+                        resolve(src);
+                    }
+                }
+            })
+        })
+        
     }
 
     function getRecommended(type, id) {
