@@ -5,6 +5,17 @@ $(document).ready(async function() {
     let genreList = await getGenres();
     console.log(genreList);
 
+    //Search Modal
+    var modal = $("#myModal");
+    var searchBtn = $("#searchBtn");
+    var span = $(".close");
+    searchBtn.on("click", function() {
+        modal.css("display", "block");
+    })
+    span.on("click", function() {
+        modal.css("display", "none");
+    })
+
     $("#logout").on("click", function (event) {
         event.preventDefault();
         console.log("LOG OUT");
@@ -30,7 +41,7 @@ $(document).ready(async function() {
         })
     })
 
-    const getData = (title) => {
+    const getData = async (title) => {
         let apiKey = "3699bcfd1aa3d5642b631dafd0a6d76e"
         let searchUrl = "https://api.themoviedb.org/3/search/multi?api_key=" + apiKey + "&language=en-US&query=" + title + "&page=1&include_adult=false";
 
@@ -39,24 +50,78 @@ $(document).ready(async function() {
         $.ajax({
             url: searchUrl,
             method: "GET"
-        }).then((results) => {
+        }).then(async (results) => {
             let result = results.results[0];
             console.log(result);
-
+            // let genre = result.genre_ids;
+            // genre.forEach()
             let searchObj = {
+                listTitle: result.original_name,
                 image: result.poster_path,
-                resultTitle: result.title,
-                popularity: result.popularity,
+                popularity: (result.popularity).toFixed(0),
                 description: result.overview,
-                releaseDate: result.release_date,
-                movieOrShow: result.media_type,
-                genre: result.genre_ids
+                releaseDate: result.first_air_date,
+                movieOrShow: (result.media_type).toUpperCase(),
+                genre: result.genre_ids[0],
+                voteAvg: result.vote_average,
+                movieId: result.id,
+                country: result.origin_country[0]
             };
             console.log(searchObj);
+            let type = result.media_type;
+            let recommendedHtml = await getRecommended(type, result.id);
+
             //Append popup search below
-            // let searchDiv = $("<div>").addClass("popOut");
-            // searchDiv.html("sample");
-            // $("main").append(searchDiv)
+            let searchHtml = 
+            `
+            <div class="row">
+                <h2 class="text-center col-12">${searchObj.listTitle}</h2>
+                <div class="col-5 p-0">
+                    <img class="p-0 ml-3" src="http://image.tmdb.org/t/p/w400${searchObj.image}"/>
+                </div>
+                <div class="col-5 searchModal p-0 ml-5">
+                    <p>${searchObj.description}</p>
+                    <p>Country: ${searchObj.country} </p>
+                    <p>Popularity Score: ${searchObj.popularity}</p>
+                    <p>Vote: ${searchObj.voteAvg}/10</p>
+                    <p>Release Date: ${searchObj.releaseDate}</p>
+                    <p>Media Type: ${searchObj.movieOrShow}</p>
+                    <button class="watchlistBtn"><i class="fas fa-plus"></i> Add to Watchlist</button>
+                </div>
+            </div>
+            <div class="row">${recommendedHtml}</div>`;
+            $("#searchModalBody").html(searchHtml);
+            $(".recommended").on("click", function() {
+                console.log("clicked");
+                let title = $(this).data("title");
+                console.log(title);
+                getData(title);
+            })
+
+            $.get("/api/watchlist").then(results => {
+                console.log(results);
+                results.forEach(listing => {
+                    if (listing.listTitle === searchObj.listTitle){
+                        $(".watchlistBtn").css("background-color","blue");
+                        $(".watchlistBtn").html("Title Added");
+                    }
+                })
+            })
+
+            $(".watchlistBtn").on("click", function() {
+                if ($(this).html() === "Title Added"){
+                    return;
+                }
+                let obj = {
+                    listTitle: searchObj.listTitle,
+                    image: searchObj.image,
+                    listId: searchObj.movieId
+                }
+                console.log(searchObj);
+                $.post("/api/watchlist", obj);
+                $(this).css("background-color","blue");
+                $(this).html("Title Added");
+            })
         });
     }
 
@@ -75,6 +140,24 @@ $(document).ready(async function() {
             })
         })
     }
+
+    function getRecommended(type, id) {
+        return new Promise(resolve => {
+            $.get(`https://api.themoviedb.org/3/${type}/${id}/recommendations?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US&page=1`).then(results => {
+                let recommendedHtml = `<h2 class="text-center w-100 mt-5">Recommended Titles</h2>`;
+                for(let i=0; i < 8; i++) {
+                    recommendedHtml += 
+                    `<div class="card-body col-3 p-0 ">
+                        <img class="ml-3 mt-3 center recommended" src="http://image.tmdb.org/t/p/w185${results.results[i].poster_path}" data-title="${results.results[i].original_name}"/>
+                        <p class="text-center w-100">${results.results[i].original_name}</p>
+                    </div>`;
+                }
+                resolve(recommendedHtml);
+            })
+        })
+    }
+
+    
 });
 
 // renderResults = (newMovieData) => {

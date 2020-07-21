@@ -28,7 +28,8 @@ module.exports = function(app){
                     res.json({message: "Incorrect password. Please re-enter credentials"})
                 }
                 //Save session id
-                req.session.userId = user.username;
+                req.session.userId = user.id;
+                req.session.username = user.username;
                 res.status(200).json({message: "Logged in"});
                 // res.status(300).json({message: "Logged in"});
             }
@@ -64,7 +65,9 @@ module.exports = function(app){
                 db.User.create(userCredentials).then(created => {
                     // res.json(created);
                     //Login the new user immediately then route them to users page
-                    req.session.userId = req.body.username;
+                    console.log(created.id);
+                    req.session.userId = created.id;
+                    req.session.username = req.body.username;
                     res.status(200).json({message: "Signed up and logged in"});
                 }).catch(err => {
                     if (err)
