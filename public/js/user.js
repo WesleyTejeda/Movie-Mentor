@@ -56,11 +56,11 @@ $(document).ready(async function() {
             // let genre = result.genre_ids;
             // genre.forEach()
             let searchObj = {
-                listTitle: result.original_name,
+                listTitle: (result.original_name || result.original_title),
                 image: result.poster_path,
                 popularity: (result.popularity).toFixed(0),
                 description: result.overview,
-                releaseDate: result.first_air_date,
+                releaseDate: (result.first_air_date || result.release_date),
                 movieOrShow: (result.media_type).toUpperCase(),
                 genre: result.genre_ids[0],
                 voteAvg: result.vote_average,
@@ -116,13 +116,8 @@ $(document).ready(async function() {
                 if ($(this).html() === "Title Added"){
                     return;
                 }
-                let obj = {
-                    listTitle: searchObj.listTitle,
-                    image: searchObj.image,
-                    listId: searchObj.movieId
-                }
                 console.log(searchObj);
-                $.post("/api/watchlist", obj);
+                $.post("/api/watchlist", searchObj);
                 $(this).css("background-color","blue");
                 $(this).html("Title Added");
             })
@@ -165,10 +160,11 @@ $(document).ready(async function() {
             $.get(`https://api.themoviedb.org/3/${type}/${id}/recommendations?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US&page=1`).then(results => {
                 let recommendedHtml = `<h2 class="text-center w-100 mt-5">Recommended Titles</h2>`;
                 for(let i=0; i < 8; i++) {
+                    let title = (results.results[i].original_name || results.results[i].original_title);
                     recommendedHtml += 
                     `<div class="card-body col-3 p-0 ">
-                        <img class="ml-3 mt-3 center recommended" src="http://image.tmdb.org/t/p/w185${results.results[i].poster_path}" data-title="${results.results[i].original_name}"/>
-                        <p class="text-center w-100">${results.results[i].original_name}</p>
+                        <img class="ml-3 mt-3 center recommended" src="http://image.tmdb.org/t/p/w185${results.results[i].poster_path}" data-title="${title}"/>
+                        <p class="text-center w-100">${title}</p>
                     </div>`;
                 }
                 resolve(recommendedHtml);
