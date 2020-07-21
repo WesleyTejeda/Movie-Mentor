@@ -6,7 +6,8 @@ module.exports = function(app){
    //Save watchlist to DB 
    app.post("/api/watchlist", (req, res) => {
       console.log(req.body);
-      db.Watchlist.create(req.body).then(() => {
+      db.Watchlist.create(req.body).then((created) => {
+         console.log(created);
          res.status(200).json({message: "Added to watchlist!"});
       }).catch(err => {
          res.status(501).json({message: err});

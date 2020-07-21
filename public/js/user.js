@@ -56,20 +56,21 @@ $(document).ready(async function() {
             // let genre = result.genre_ids;
             // genre.forEach()
             let searchObj = {
-                listTitle: result.original_name,
+                listTitle: (result.original_name || result.original_title),
                 image: result.poster_path,
                 popularity: (result.popularity).toFixed(0),
                 description: result.overview,
-                releaseDate: result.first_air_date,
+                releaseDate: (result.first_air_date || result.release_date),
                 movieOrShow: (result.media_type).toUpperCase(),
                 genre: result.genre_ids[0],
                 voteAvg: result.vote_average,
                 movieId: result.id,
-                country: result.origin_country[0]
+                country: (result.origin_country || "N/A")
             };
             console.log(searchObj);
             let type = result.media_type;
             let recommendedHtml = await getRecommended(type, result.id);
+            let videoSrc = await getVideos(type, result.id);
 
             //Append popup search below
             let searchHtml = 
@@ -87,6 +88,9 @@ $(document).ready(async function() {
                     <p>Release Date: ${searchObj.releaseDate}</p>
                     <p>Media Type: ${searchObj.movieOrShow}</p>
                     <button class="watchlistBtn"><i class="fas fa-plus"></i> Add to Watchlist</button>
+                    <iframe id="ytplayer" type="text/html" width="640" height="360"
+                    src="https://www.youtube.com/embed/${videoSrc}?autoplay=1"
+                    frameborder="0"></iframe>
                 </div>
             </div>
             <div class="row">${recommendedHtml}</div>`;
@@ -112,13 +116,8 @@ $(document).ready(async function() {
                 if ($(this).html() === "Title Added"){
                     return;
                 }
-                let obj = {
-                    listTitle: searchObj.listTitle,
-                    image: searchObj.image,
-                    listId: searchObj.movieId
-                }
                 console.log(searchObj);
-                $.post("/api/watchlist", obj);
+                $.post("/api/watchlist", searchObj);
                 $(this).css("background-color","blue");
                 $(this).html("Title Added");
             })
@@ -141,15 +140,31 @@ $(document).ready(async function() {
         })
     }
 
+    function getVideos(type, id) {
+        return new Promise(resolve => {
+            $.get(`https://api.themoviedb.org/3/${type}/${id}/videos?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US`).then(results => {
+                let src = "";
+                for(let i=0; i < results.results.length; i++){
+                    if(results.results[i].type === "Trailer"){
+                        src = results.results[i].key;
+                        resolve(src);
+                    }
+                }
+            })
+        })
+        
+    }
+
     function getRecommended(type, id) {
         return new Promise(resolve => {
             $.get(`https://api.themoviedb.org/3/${type}/${id}/recommendations?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US&page=1`).then(results => {
                 let recommendedHtml = `<h2 class="text-center w-100 mt-5">Recommended Titles</h2>`;
                 for(let i=0; i < 8; i++) {
+                    let title = (results.results[i].original_name || results.results[i].original_title);
                     recommendedHtml += 
                     `<div class="card-body col-3 p-0 ">
-                        <img class="ml-3 mt-3 center recommended" src="http://image.tmdb.org/t/p/w185${results.results[i].poster_path}" data-title="${results.results[i].original_name}"/>
-                        <p class="text-center w-100">${results.results[i].original_name}</p>
+                        <img class="ml-3 mt-3 center recommended" src="http://image.tmdb.org/t/p/w185${results.results[i].poster_path}" data-title="${title}"/>
+                        <p class="text-center w-100">${title}</p>
                     </div>`;
                 }
                 resolve(recommendedHtml);
