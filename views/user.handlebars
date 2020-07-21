@@ -1,4 +1,4 @@
-  <script src="/js/user.js"></script>
+<script src="/js/user.js"></script>
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-dark border-bottom">
         <span class="navbar-brand mb-0 h1 p-1">
@@ -6,47 +6,50 @@
         </span>
         <section id="formContainer" class="container text-center justify-content-center">
             <form id="searchForm" class="form-inline">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1"><i class="fas fa-tv"></i></span>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-tv"></i></span>
+                    </div>
+                    <input id="inputField" type="text" class="form-control" placeholder="Search A Title"
+                        aria-label="search" aria-describedby="basic-addon1">
+                    <button id="searchBtn"><i class="fas fa-search"></i></button>
                 </div>
-                <input id="inputField" type="text" class="form-control" placeholder="Search A Title" aria-label="search" aria-describedby="basic-addon1">
-                <button id="searchBtn"><i class="fas fa-search"></i></button>
-              </div>
             </form>
         </section>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active mt-3">
-                    <button id="watchlistBtn">Watchlist</button>
-                </li>
-
-                <li class="nav-item mt-3">
-                    <button id="userNameBtn">Username</button>
-                </li>
-
                 <li>
                     <button type="button" class="btn btn-info btn-lg p-1 m-2" data-toggle="modal"
-                        data-target="#logoutModal">Logout</button>
-                    <div class="modal fade" id="logoutModal" role="dialog">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button id="logout1234" type="button" class="close"  data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Are you sure you want to logout?</h4>
-                                </div>
-                                <div class="modal-body1">
-                                    <button type="button" class="btn btn-default" id="logout" data-dismiss="modal">Logout</button>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="close" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        data-target="#watchListModal" id="watchListButton">Watchlist</button>
                 </li>
             </ul>
 
+            <li class="nav-item mt-3">
+                <button id="userNameBtn">Username</button>
+            </li>
+
+            <li>
+                <button type="button" class="btn btn-info btn-lg p-1 m-2" data-toggle="modal"
+                    data-target="#logoutModal">Logout</button>
+                <div class="modal fade" id="logoutModal" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button id="logout1234" type="button" class="close"
+                                    data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Are you sure you want to logout?</h4>
+                            </div>
+                            <div class="modal-body1">
+                                <button type="button" class="btn btn-default" id="logout"
+                                    data-dismiss="modal">Logout</button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="close" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
         </div>
 
 
@@ -55,23 +58,40 @@
 
 
 </header>
-<main class="card-group" id="cardGroup" style="width: 90%; height: auto; margin: 0 auto; float: none; margin-top: 20px;">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, fugiat odit odio quod excepturi dolores natus. Iste minus molestiae quod excepturi rem harum at saepe molestias. Odio veniam fugit ipsum? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, culpa consectetur ea aliquid voluptates labore inventore maxime minima autem natus impedit provident repellendus temporibus ipsam nam, atque ratione itaque voluptas.
+<main class="card-group" id="cardGroup"
+    style="width: 90%; height: auto; margin: 0 auto; float: none; margin-top: 20px;">
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, fugiat odit odio quod excepturi dolores natus.
+    Iste minus molestiae quod excepturi rem harum at saepe molestias. Odio veniam fugit ipsum? Lorem ipsum dolor sit
+    amet, consectetur adipisicing elit. Iusto, culpa consectetur ea aliquid voluptates labore inventore maxime minima
+    autem natus impedit provident repellendus temporibus ipsam nam, atque ratione itaque voluptas.
     <div id="myModal" class="modal">
         <div class="modal-content">
             <div class="modal-header w-100">
-                <span class="close">&times;</span>
-        </div>
-        <div id="searchModalBody" class="modal-body row text-white darkBg container-fluid">  
+                <span id="searchSpan"class="close">&times;</span>
+            </div>
+            <div id="searchModalBody" class="modal-body row text-white darkBg container-fluid">
+            </div>
         </div>
     </div>
+
+    <div id="watchListModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header w-100">
+                <span id="watchListSpan"class="close">&times;</span>
+            </div>
+            <div id="watchListModalBody" class="modal-body row text-white darkBg container-fluid">
+            </div>
+        </div>
+    </div>
+
     {{#each listings}}
     <div class="card border-dark mb-3 col" id="newCard" style="margin: 20px;">
         <img src="https://via.placeholder.com/150" class="card-img-top" id="cardImage" alt="Placeholder">
         <div class="card-body">
             <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content.
-            This content is a little bit longer.</p>
+            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+                content.
+                This content is a little bit longer.</p>
             <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
         </div>
     </div>

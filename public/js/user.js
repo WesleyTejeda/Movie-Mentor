@@ -1,4 +1,3 @@
-
 $(document).ready(async function() {
     let searchForm = $("#searchForm");
     let inputField = $("#inputField");
@@ -8,13 +7,27 @@ $(document).ready(async function() {
     //Search Modal
     var modal = $("#myModal");
     var searchBtn = $("#searchBtn");
-    var span = $(".close");
-    searchBtn.on("click", function() {
-        modal.css("display", "block");
-    })
-    span.on("click", function() {
-        modal.css("display", "none");
-    })
+    var searchSpan = $("#searchSpan");
+    searchBtn.on("click", function () {
+      modal.css("display", "block");
+    });
+    searchSpan.on("click", function () {
+      modal.css("display", "none");
+    });
+    //WatchList Modal
+    var watchListModal = $("#watchListModal");
+    var watchListBtn = $("#watchListBtn");
+    var watchListSpan = $("#watchListSpan");
+    watchListBtn.on("click", function () {
+    watchListModal.css("display", "block");
+    $.get("/api/watchlist").then(watchlist => {
+        getWatchListData(watchlist);
+    })  
+    });
+    watchListSpan.on("click", function () {
+        $(".modal-backdrop").css("display","none");
+    watchListModal.css("display", "none");
+    });
 
     $("#logout").on("click", function (event) {
         event.preventDefault();
@@ -31,13 +44,6 @@ $(document).ready(async function() {
         event.preventDefault();
         $.get("/user", function () {
             console.log("User Page");
-        })
-    })
-
-    $("#watchlistBtn").on("click", function (event) {
-        event.preventDefault();
-        $.get("/api/watchlist", function () {
-            console.log("Watchlist Page");
         })
     })
 
@@ -130,6 +136,50 @@ $(document).ready(async function() {
         let search = inputField.val();
         getData(search);
     });
+    const getWatchListData = (watchlist) => {
+        let listings = ``;
+        for (let i = 0; i < watchlist.length; i++) {
+          listings += `
+              <h2 class="text-center col-4">${watchlist[i].listTitle}</h2>
+              <section class="col-sm-4">
+              <figure class="card" id="moviePoster">
+              <img class="p-0 ml-3" src="http://image.tmdb.org/t/p/w400${watchlist[i].image}"/>
+              </figure>
+              </section>
+              <aside class="col-sm-8">
+              <div class="card">
+                  <p>This Movie Is About: ${watchlist[i].description}</p>
+              </div>
+              </hr>
+              <div class="card">  
+                  <p>Popularity Score: ${watchlist[i].popularity}</p>
+              </div>  
+              <div class="card">
+                  <p>Voter Average: ${watchlist[i].voteAvg} </p>
+              </div>
+              </hr>
+              <div class="card">
+                  <p>Rating: ${watchlist[i].voteAvg}</p>
+              </div>
+              </hr>
+              <div class="card">
+                  <p>Release Date: ${watchlist[i].releaseDate}</p>
+              </div>
+              <div class="card">
+                  <p>Move or Show?: ${watchlist[i].movieOrShow}</p>
+              </div>
+              <div class="card">
+                  <p>Genre: ${watchlist[i].genre}</p>
+              </div>
+          </aside>`;
+        }
+        let watchListHtml = `
+          <section class="row">
+            ${listings}
+          </section>
+          `;
+        $("#watchListModal").html(watchListHtml);
+    };
 
     function getGenres() {
         return new Promise(resolve => {
