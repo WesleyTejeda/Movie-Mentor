@@ -120,7 +120,7 @@ $(document).ready(async function() {
                     </div>
                     <div class="col-md-5 col-sm-12 searchModal p-0 ml-5 mr-10">
                     <h2 class="text-center">${searchObj.listTitle}</h2>
-                        <p style="max-width: 90%">${searchObj.description}</p>
+                        <p id="description">${searchObj.description}</p>
                         <p>Country: ${searchObj.country} </p>
                         <p>Popularity Score: ${searchObj.popularity}</p>
                         <p>Vote: ${searchObj.voteAvg}/10</p>
@@ -180,20 +180,24 @@ $(document).ready(async function() {
         let listings = ``;
         for (let i = 0; i < watchlist.length; i++) {
           listings += `
-          <div class="row gradientBg text-white">
-            <div class="col-5 p-0">
-                <img class="p-0 ml-3" src="http://image.tmdb.org/t/p/w400${watchlist[i].image}"/>
-             </div>
-            <div class="col-5 searchModal p-0 ml-5 text-white">
-                <button class="remove" data-title="${watchlist[i].listTitle}"><i class="far fa-trash-alt"></i> Remove From Watchlist</button>
-                <p>${watchlist[i].description}</p>
-                <p>Country: ${watchlist[i].country} </p>
-                <p>Popularity Score: ${watchlist[i].popularity}</p>
-                <p>Vote: ${watchlist[i].voteAvg}/10</p>
-                <p>Release Date: ${watchlist[i].releaseDate}</p>
-                <p>Media Type: ${watchlist[i].movieOrShow}</p>
-                <iframe id="ytplayer" type="text/html" width="520" height="350" src=${watchlist[i].trailer}frameborder="0"></iframe>
-          </div>
+          <div class="container-fluid">
+            <div class="row gradientBg text-white watchlistRow">
+                <div class="col-md-5 col-sm-12 p-0">
+                    <img class="p-0 ml-3 watchlistImg" src="http://image.tmdb.org/t/p/w400${watchlist[i].image}"/>
+                </div>
+                <div class="col-md-5 col-sm-12 searchModal p-0 ml-5 mr-10 text-white">
+                    <button class="remove" data-title="${watchlist[i].listTitle}"><i class="far fa-trash-alt"></i> Remove From Watchlist</button>
+                    <p id="description">${watchlist[i].description}</p>
+                    <p>Country: ${watchlist[i].country} </p>
+                    <p>Popularity Score: ${watchlist[i].popularity}</p>
+                    <p>Vote: ${watchlist[i].voteAvg}/10</p>
+                    <p>Release Date: ${watchlist[i].releaseDate}</p>
+                    <p>Media Type: ${watchlist[i].movieOrShow}</p>
+                    <div class="videoWrapper" col-xs-8">
+                        <iframe id="ytplayer" type="text/html" src=${watchlist[i].trailer}frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
         </div>`;
         }
         $("#watchListModal").html(listings);
