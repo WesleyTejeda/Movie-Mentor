@@ -23,7 +23,9 @@ h2{
   height: 100%;
 }
 
-
+.block {
+  display: block !important;
+}
 
 .card-title {
   color: white;
@@ -175,6 +177,7 @@ p{
     color: white;
     background-color: lightslategray;
     height: 50px;
+  }
 
   #ytplayer {
       width: 110%;
@@ -219,4 +222,15 @@ p{
 
   .searchModal p {
     color:white;
+  }
+
+  .username {
+    border: white;
+    border-radius: 3px;
+    color: white;
+    margin-right: 10px;
+  }
+
+  ul,li {
+    list-style: none;
   }

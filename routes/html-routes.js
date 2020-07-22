@@ -41,7 +41,7 @@ module.exports = function(app){
                 };
                 listingArray.push(obj);
             }
-            res.render("user", {listings: listingArray, genreMovie: genreList[0], genreTv: genreList[1]});
+            res.render("user", {listings: listingArray, genreMovie: genreList[0], genreTv: genreList[1], username: req.session.username});
         })
 
     });
