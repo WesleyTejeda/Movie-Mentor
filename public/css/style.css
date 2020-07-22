@@ -1,9 +1,10 @@
 /* Styles */
 @import url('https://fonts.googleapis.com/css2?family=Limelight&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kreon:wght@600&display=swap');
 
 body, html, main {
  height: 100%;
- font-family: Arial, Helvetica, sans-serif;
+ font-family: 'Kreon', serif;
 
 }
 
@@ -22,8 +23,6 @@ h2{
   background-size: cover;
   height: 100%;
 }
-
-
 
 .card-title {
   color: white;
@@ -65,9 +64,15 @@ p{
     margin-right: auto;
   }
 
-
+  #indexCard{
+    background-image: url(../images/blue-wallpaper-2680270.jpg);
+    background-size: cover;
+    text-decoration-color: white;
+    opacity: 0.8;
+  }
+  
 .card {
-  background-image: url(../images/blue-wallpaper-2680270.jpg);
+ 
   background-size: cover;
   text-decoration-color: white;
   opacity: 0.8;
@@ -175,6 +180,7 @@ p{
     color: white;
     background-color: lightslategray;
     height: 50px;
+  }
 
   #ytplayer {
       width: 110%;
