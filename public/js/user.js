@@ -56,15 +56,6 @@ $(document).ready(async function() {
         $.ajax({
             url: queryUrl,
             method: "GET"
-<<<<<<< HEAD
-        }).then((result) => {
-            var result = result.results[0];
-
-            var searchObj = {
-                image: "https://image.tmdb.org/t/p/w200" + result.poster_path,
-                resultTitle: result.title,
-                popularity: result.popularity,
-=======
         }).then(async (results) => {
             let result = results.results[0];
             console.log(result);
@@ -74,7 +65,6 @@ $(document).ready(async function() {
                 listTitle: (result.original_name || result.original_title),
                 image: result.poster_path,
                 popularity: (result.popularity).toFixed(0),
->>>>>>> 8a0c3c3783644d0adbe452ce12867a7a443b6f66
                 description: result.overview,
                 releaseDate: (result.first_air_date || result.release_date),
                 movieOrShow: (result.media_type).toUpperCase(),
@@ -90,25 +80,28 @@ $(document).ready(async function() {
 
             //Append popup search below
             let searchHtml = 
-            `
-            <div class="row">
-                <h2 class="text-center col-12">${searchObj.listTitle}</h2>
-                <div class="col-5 p-0">
-                    <img class="p-0 ml-3" src="http://image.tmdb.org/t/p/w400${searchObj.image}"/>
+            `<div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-5 col-sm-12 p-0">
+                        <img class="p-0 mr-4 img-fluid" id="searchImage" src="http://image.tmdb.org/t/p/w400${searchObj.image}"/>
+                    </div>
+                    <div class="col-md-5 col-sm-12 searchModal p-0 ml-5 mr-10">
+                    <h2 class="text-center">${searchObj.listTitle}</h2>
+                        <p style="max-width: 90%">${searchObj.description}</p>
+                        <p>Country: ${searchObj.country} </p>
+                        <p>Popularity Score: ${searchObj.popularity}</p>
+                        <p>Vote: ${searchObj.voteAvg}/10</p>
+                        <p>Release Date: ${searchObj.releaseDate}</p>
+                        <p>Media Type: ${searchObj.movieOrShow}</p>
+                        <button class="watchlistBtn"><i class="fas fa-plus"></i> Add to Watchlist</button>
+                        <div class="videoWrapper col-xs-8">
+                            <iframe id="ytplayer" type="text/html"
+                            src="https://www.youtube.com/embed/${videoSrc}?autoplay=1"
+                            frameborder="0"></iframe>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-5 searchModal p-0 ml-5">
-                    <p>${searchObj.description}</p>
-                    <p>Country: ${searchObj.country} </p>
-                    <p>Popularity Score: ${searchObj.popularity}</p>
-                    <p>Vote: ${searchObj.voteAvg}/10</p>
-                    <p>Release Date: ${searchObj.releaseDate}</p>
-                    <p>Media Type: ${searchObj.movieOrShow}</p>
-                    <button class="watchlistBtn"><i class="fas fa-plus"></i> Add to Watchlist</button>
-                    <iframe id="ytplayer" type="text/html" width="640" height="360"
-                    src="https://www.youtube.com/embed/${videoSrc}?autoplay=1"
-                    frameborder="0"></iframe>
-                </div>
-            </div>
+            </div>    
             <div class="row">${recommendedHtml}</div>`;
             $("#searchModalBody").html(searchHtml);
             $(".recommended").on("click", function() {
@@ -140,17 +133,11 @@ $(document).ready(async function() {
         });
     }
 
-<<<<<<< HEAD
-    $(searchBtn).on("click", function () {
-        getData(searchText.val());
-        searchText.val("");
-=======
 
     $(searchForm).on("submit", function (event) {
         event.preventDefault();
         let search = inputField.val();
         getData(search);
->>>>>>> 8a0c3c3783644d0adbe452ce12867a7a443b6f66
     });
     const getWatchListData = (watchlist) => {
         let listings = ``;
@@ -228,8 +215,8 @@ $(document).ready(async function() {
                 for(let i=0; i < 8; i++) {
                     let title = (results.results[i].original_name || results.results[i].original_title);
                     recommendedHtml += 
-                    `<div class="card-body col-3 p-0 ">
-                        <img class="ml-3 mt-3 center recommended" src="http://image.tmdb.org/t/p/w185${results.results[i].poster_path}" data-title="${title}"/>
+                    `<div class="card-body col-3 p-0">
+                        <img class="ml-6 mt-3 mb-3 center recommended" src="http://image.tmdb.org/t/p/w185${results.results[i].poster_path}" data-title="${title}"/>
                         <p class="text-center w-100">${title}</p>
                     </div>`;
                 }
