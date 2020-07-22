@@ -1,14 +1,15 @@
 /* Styles */
-
 @import url('https://fonts.googleapis.com/css2?family=Limelight&display=swap');
 
 body, html, main {
  height: 100%;
- font-family: 'Limelight', cursive;
+ font-family: Arial, Helvetica, sans-serif;
+
 }
 
 h2{
   color: white;
+  font-family: 'Limelight', cursive;
 }
 .backgroundOne{
   background-image: url(../images/cinemawallpaper.png);
@@ -37,6 +38,7 @@ p{
   color: white;
 }
 
+
 .text-white {
     color: white !important;
 }
@@ -50,10 +52,12 @@ p{
     background-color: black;
 }
 
+
 .gradientBg {
   background: rgb(2,0,36);
   background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(16,16,36,1) 35%, rgba(0,212,255,1) 100%);
 }
+
 
 .center {
     display: block;
@@ -61,12 +65,14 @@ p{
     margin-right: auto;
   }
 
+
 .card {
   background-image: url(../images/blue-wallpaper-2680270.jpg);
   background-size: cover;
   text-decoration-color: white;
   opacity: 0.8;
 }
+
 
 .modal {
     display: none;
@@ -83,7 +89,9 @@ p{
    
   .modal-content {
     position: relative;
-    background-color: white;
+
+    background-color: #fefefe;
+
     margin: auto;
     padding: 0;
     border: 1px solid #888;
@@ -128,7 +136,6 @@ p{
   .modal-body {
     padding: 2px 16px;
     height: 100%;
-    width: 100%;
   }
 
   .modal-body1 {
@@ -143,7 +150,7 @@ p{
 
   .searchModal {
       margin-top: 40px;
-      margin-left: 20px;
+      margin-right: 20px;
       margin-bottom: 40px;
   }
 
@@ -154,23 +161,55 @@ p{
   .watchlistBtn {
       color: white;
       background-color: rgb(38, 180, 38);
+
+      margin-bottom: 30px;
+
   }
 
   .watchlistBtn:hover {
     box-shadow: 0px 2px 26px 15px rgba(53,148,113,1);
   }
 
+
   .card-text {
     color: white;
     background-color: lightslategray;
     height: 50px;
+
+  #ytplayer {
+      width: 110%;
   }
 
-  .abs {
+  #searchImage {
+      /* position: absolute; */
+      width: 85%;
+      height: auto;
+      max-height: 765px;
+      margin-left: 10%;
+      margin-top: 50px;
+  }
+
+  .recommended {
+      width: 70%;
+      height: auto;
+  }
+
+  .videoWrapper {
+    float: none;
+    clear: both;
+    width: 80%;
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 25px;
+    height: 0;
+  }
+
+  .videoWrapper iframe {
     position: absolute;
-    top: 100px;
-    left: 60px;
-    min-width: 10vw;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
 
   .remove {

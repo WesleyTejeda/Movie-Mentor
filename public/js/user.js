@@ -16,7 +16,8 @@ $(document).ready(async function() {
     });
     //WatchList Modal
     var watchListModal = $("#watchListModal");
-    var watchListBtn = $("#watchListButton");
+
+    var watchListBtn = $("#watchListBtn");
     var watchListSpan = $("#watchListSpan");
     watchListBtn.on("click", function () {
         watchListModal.css("display", "block");
@@ -26,6 +27,7 @@ $(document).ready(async function() {
     });
     watchListSpan.on("click", function () {
         $(".modal-backdrop").css("display","none");
+
         watchListModal.css("display", "none");
     });
 
@@ -53,6 +55,7 @@ $(document).ready(async function() {
         getData(title);
     })
 
+
     $("#logout").on("click", function (event) {
         event.preventDefault();
         console.log("LOG OUT");
@@ -73,24 +76,27 @@ $(document).ready(async function() {
 
     const getData = async (title) => {
         let apiKey = "3699bcfd1aa3d5642b631dafd0a6d76e"
-        let searchUrl = "https://api.themoviedb.org/3/search/multi?api_key=" + apiKey + "&language=en-US&query=" + title + "&page=1&include_adult=false";
+        let queryUrl = "https://api.themoviedb.org/3/search/multi?api_key=" + apiKey + "&language=en-US&query=" + title + "&page=1&include_adult=false";
 
         title = title.replace(/(, )/g, "+");
 
         $.ajax({
-            url: searchUrl,
+            url: queryUrl,
             method: "GET"
         }).then(async (results) => {
             let result = results.results[0];
             console.log(result);
             // let genre = result.genre_ids;
             // genre.forEach()
+
+
             let country = "N/A";
             if(result.origin_country){
                 if(typeof(result.origin_country === "object"))
                     country = result.origin_country[0];
                 else country = result.origin_country;
             }
+
             let searchObj = {
                 listTitle: (result.original_name || result.original_title),
                 image: result.poster_path,
@@ -110,25 +116,31 @@ $(document).ready(async function() {
 
             //Append popup search below
             let searchHtml = 
-            `
-            <div class="row gradientBg">
-                <div class="col-5 p-0">
-                    <img class="p-0 ml-3" src="http://image.tmdb.org/t/p/w400${searchObj.image}"/>
+
+            `<div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-5 col-sm-12 p-0">
+                        <img class="p-0 mr-4 img-fluid" id="searchImage" src="http://image.tmdb.org/t/p/w400${searchObj.image}"/>
+                    </div>
+                    <div class="col-md-5 col-sm-12 searchModal p-0 ml-5 mr-10">
+                    <h2 class="text-center">${searchObj.listTitle}</h2>
+                        <p style="max-width: 90%">${searchObj.description}</p>
+                        <p>Country: ${searchObj.country} </p>
+                        <p>Popularity Score: ${searchObj.popularity}</p>
+                        <p>Vote: ${searchObj.voteAvg}/10</p>
+                        <p>Release Date: ${searchObj.releaseDate}</p>
+                        <p>Media Type: ${searchObj.movieOrShow}</p>
+                        <button class="watchlistBtn"><i class="fas fa-plus"></i> Add to Watchlist</button>
+                        <div class="videoWrapper col-xs-8">
+                            <iframe id="ytplayer" type="text/html"
+                            src="https://www.youtube.com/embed/${videoSrc}?autoplay=1"
+                            frameborder="0"></iframe>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-5 searchModal p-0 ml-5">
-                    <p class="innerText">${searchObj.description}</p>
-                    <p class="innerText">Country: ${searchObj.country} </p>
-                    <p class="innerText">Popularity Score: ${searchObj.popularity}</p>
-                    <p class="innerText">Vote: ${searchObj.voteAvg}/10</p>
-                    <p class="innerText">Release Date: ${searchObj.releaseDate}</p>
-                    <p class="innerText">Media Type: ${searchObj.movieOrShow}</p>
-                    <button class="watchlistBtn"><i class="fas fa-plus"></i> Add to Watchlist</button>
-                    <iframe id="ytplayer" type="text/html" width="640" height="360"
-                    src="https://www.youtube.com/embed/${videoSrc}?autoplay=0"
-                    frameborder="0"></iframe>
-                </div>
-            </div>
-            <div class="row gradientBg">${recommendedHtml}</div>`;
+            </div>    
+            <div class="row">${recommendedHtml}</div>`;
+
             $("#searchModalBody").html(searchHtml);
             $(".recommended").on("click", function() {
                 console.log("clicked");
@@ -139,6 +151,7 @@ $(document).ready(async function() {
 
             $.get("/api/watchlist").then(results => {
                 console.log(results);
+
                 if(results.length !== 0){
                     for(let i=0; i < results.length; i++){
                         if(results[i].listTitle === searchObj.listTitle){
@@ -171,6 +184,7 @@ $(document).ready(async function() {
         let listings = ``;
         for (let i = 0; i < watchlist.length; i++) {
           listings += `
+
           <div class="row gradientBg text-white">
             <div class="col-5 p-0">
                 <img class="p-0 ml-3" src="http://image.tmdb.org/t/p/w400${watchlist[i].image}"/>
@@ -287,8 +301,9 @@ $(document).ready(async function() {
                     let title = (results.results[i].original_name || results.results[i].original_title);
                     recommendedHtml += 
                     `<div class="card-body col-3 p-0 ">
-                        <img class="ml-3 mt-3 center recommended" src="http://image.tmdb.org/t/p/w185${results.results[i].poster_path}" data-title="${title}"/>
+                        <img class="ml-6 mt-3 mb-3 center recommended" src="http://image.tmdb.org/t/p/w185${results.results[i].poster_path}" data-title="${title}"/>
                         <p class="text-center w-100 text-white">${title}</p>
+
                     </div>`;
                 }
                 resolve(recommendedHtml);
