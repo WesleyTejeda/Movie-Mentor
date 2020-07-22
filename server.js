@@ -14,6 +14,8 @@ const bodyParser = require('body-parser')
 
 //Import db when built
 var db = require("./models");
+//Axios
+const axios = require('axios');
 
 //Use JSON and expect nested objects
 app.use(express.urlencoded({ extended: true }));

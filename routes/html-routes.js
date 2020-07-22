@@ -1,6 +1,8 @@
 // var db = require("../models");
 // const path = require("path");
 const authentication = require("../config/authenticated/authentication");
+const axios = require('axios');
+const { query } = require("express");
 //Build html routes
 
 module.exports = function(app){
@@ -9,11 +11,135 @@ module.exports = function(app){
         res.render("index");
     })
     //On /user route return user.html
-    app.get("/user", authentication, (req, res) => {
-        // app.engine("handlebars", exphbs({ defaultLayout: "userMain" }));
-        res.render("user");
+
+
+    app.get("/user", authentication, async (req, res) => {
+        console.log(req.body);
+        let genreList = await getGenres();
+        let listingArray = [];
+        
+        function getGenres() {
+            return new Promise(resolve => {
+                axios.get("https://api.themoviedb.org/3/genre/movie/list?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US").then(genres => {
+                    let genreList = [genres.data.genres];
+                    axios.get("https://api.themoviedb.org/3/genre/tv/list?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US").then(genres => {
+                    genreList.push(genres.data.genres);
+                    resolve(genreList);
+                    })
+                })
+            })
+        }
+        axios.get("https://api.themoviedb.org/3/trending/all/week?api_key=3699bcfd1aa3d5642b631dafd0a6d76e").then(response => {
+            for(let i=0; i < response.data.results.length; i++){
+                let obj = {
+                    listTitle: (response.data.results[i].original_name || response.data.results[i].original_title),
+                    image: response.data.results[i].poster_path,
+                    movieOrShow: (response.data.results[i].media_type).toUpperCase(),
+                    movieId: response.data.results[i].id,
+                };
+                listingArray.push(obj);
+            }
+            res.render("user", {listings: listingArray, genreMovie: genreList[0], genreTv: genreList[1]});
+        })
+
     });
     
+    //User sends value through select, render the page that corresponds
+    app.post("/user", authentication, async (req, res) => {
+        console.log(req.body);
+        let genreList = await getGenres();
+        let listingArray = [];
+        let trendingQuery = "https://api.themoviedb.org/3/trending/all/week?api_key=3699bcfd1aa3d5642b631dafd0a6d76e";
+        let discoverMovieQuery = "https://api.themoviedb.org/3/discover/movie?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1";
+        let discoverTvQuery = "https://api.themoviedb.org/3/discover/tv?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US&sort_by=popularity.desc&page=1&timezone=America%2FNew_York&include_null_first_air_dates=false";
+        let topQuery = "https://api.themoviedb.org/3/movie/top_rated?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US&page=1";
+        let upcomingQuery = "https://api.themoviedb.org/3/movie/upcoming?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US&page=1";
+        if(req.body.value === ""){
+            res.status(200).json({message: "It's okay I won't refresh"})
+        }
+        //Check if section select changed
+        switch (req.body.value){
+            case "A": 
+                listingArray = await multiData(trendingQuery);
+                respond()
+                break;
+            case "B": 
+                listingArray = await multiData(discoverMovieQuery);
+                respond()
+                break;
+            case "C": 
+                listingArray = await multiData(discoverTvQuery);
+                respond()
+                break;
+            case "D": 
+                listingArray = await multiData(topQuery);
+                respond()
+                break;
+            case "F": 
+                listingArray = await multiData(upcomingQuery);
+                respond()
+                break;
+        }
+        console.log(listingArray);
+        //Check if either movie or tv changed
+        //Movie
+        let genreQuery = "https://api.themoviedb.org/3/discover/movie?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=";
+        let type = "";
+        for(let i=0; i < genreList[0]; i++){
+            if(genreList[0].id === req.body.value){
+                genreQuery += genreList[0].id;
+                type = "movie";
+                console.log(genreQuery);
+                listingArray = await multiData(genreQuery);
+                respond()
+            }
+        }
+        //Tv
+        for(let i=0; i < genreList[1]; i++){
+            if(genreList[1].id === req.body.value){
+                genreQuery += genreList[0].id;
+                type = "tv";
+                console.log(genreQuery);
+                listingArray = await multiData(genreQuery);
+                respond()
+            }
+            else res.status(500).json({message: "Search query not found. No refresh!"});
+        }
+        console.log(listingArray);
+        function respond() {
+            res.status(200).render("user", {listings: listingArray, genreMovie: genreList[0], genreTv: genreList[1]});
+        }
+        function multiData(queryUrl) {
+            return new Promise(resolve => {
+                axios.get(queryUrl).then(response => {
+                    let arr = [];
+                    for(let i=0; i < response.data.results.length; i++){
+                        let obj = {
+                            listTitle: (response.data.results[i].original_name || response.data.results[i].original_title),
+                            image: response.data.results[i].poster_path,
+                            movieOrShow: (response.data.results[i].media_type),
+                            movieId: response.data.results[i].id,
+                            rating: response.data.results[i].vote_average
+                        };
+                        arr.push(obj);
+                    }
+                    resolve(arr);
+                })
+            })
+        }
+        function getGenres() {
+            return new Promise(resolve => {
+                axios.get("https://api.themoviedb.org/3/genre/movie/list?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US").then(genres => {
+                    let genreList = [genres.data.genres];
+                    axios.get("https://api.themoviedb.org/3/genre/tv/list?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US").then(genres => {
+                    genreList.push(genres.data.genres);
+                    resolve(genreList);
+                    })
+                })
+            })
+        }
+    });
+
     app.post("/logout", (req, res) => {
         // Set a cookie with past expiry to overwrite current cookie
         res.cookie("session", process.env.cookieSecret, {expires: new Date(0)});
