@@ -41,6 +41,10 @@ module.exports = function(sequelize, DataTypes) {
         country: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        trailer: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
     })
 

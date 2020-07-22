@@ -16,7 +16,7 @@ $(document).ready(async function() {
     });
     //WatchList Modal
     var watchListModal = $("#watchListModal");
-    var watchListBtn = $("#watchListBtn");
+    var watchListBtn = $("#watchListButton");
     var watchListSpan = $("#watchListSpan");
     watchListBtn.on("click", function () {
         watchListModal.css("display", "block");
@@ -27,8 +27,23 @@ $(document).ready(async function() {
     });
     watchListSpan.on("click", function () {
         $(".modal-backdrop").css("display","none");
-    watchListModal.css("display", "none");
+        watchListModal.css("display", "none");
     });
+
+    $("select").on("change", function() {
+        let value = $(this).val();
+        console.log(value);
+        $.post("/user", {value}).then(response => {
+            console.log(response);
+        })
+    })
+
+    $(".searchThis").on("click", function() {
+        console.log("clicked");
+        modal.css("display", "block");
+        let title = $(this).data("title");
+        getData(title);
+    })
 
     $("#logout").on("click", function (event) {
         event.preventDefault();
@@ -88,8 +103,7 @@ $(document).ready(async function() {
             //Append popup search below
             let searchHtml = 
             `
-            <div class="row">
-                <h2 class="text-center col-12">${searchObj.listTitle}</h2>
+            <div class="row gradientBg">
                 <div class="col-5 p-0">
                     <img class="p-0 ml-3" src="http://image.tmdb.org/t/p/w400${searchObj.image}"/>
                 </div>
@@ -106,7 +120,7 @@ $(document).ready(async function() {
                     frameborder="0"></iframe>
                 </div>
             </div>
-            <div class="row">${recommendedHtml}</div>`;
+            <div class="row gradientBg">${recommendedHtml}</div>`;
             $("#searchModalBody").html(searchHtml);
             $(".recommended").on("click", function() {
                 console.log("clicked");
@@ -117,21 +131,21 @@ $(document).ready(async function() {
 
             $.get("/api/watchlist").then(results => {
                 console.log(results);
-                results.forEach(listing => {
-                    if (listing.listTitle === searchObj.listTitle){
-                        $(".watchlistBtn").css("background-color","blue");
-                        $(".watchlistBtn").html("Title Added");
+                if(results.length !== 0){
+                    for(let i=0; i < results.length; i++){
+                        if(results[i].listTitle === searchObj.listTitle){
+                            $(".watchlistBtn").css("background-color","blue");
+                            $(".watchlistBtn").html("Title Added");
+                        }
                     }
-                })
+                }
             })
 
             $(".watchlistBtn").on("click", function() {
                 if ($(this).html() === "Title Added"){
                     return;
                 }
-                let saveObj = {
-                    listTitle: searchObj.listTitle
-                }
+                searchObj.trailer = `https://www.youtube.com/embed/${videoSrc}?autoplay=0`;
                 $.post("/api/watchlist", searchObj);
                 $(this).css("background-color","blue");
                 $(this).html("Title Added");
@@ -149,45 +163,60 @@ $(document).ready(async function() {
         let listings = ``;
         for (let i = 0; i < watchlist.length; i++) {
           listings += `
-              <h2 class="text-center col-4">${watchlist[i].listTitle}</h2>
-              <section class="col-sm-4">
-              <figure class="card" id="moviePoster">
-              <img class="p-0 ml-3" src="http://image.tmdb.org/t/p/w400${watchlist[i].image}"/>
-              </figure>
-              </section>
-              <aside class="col-sm-8">
-              <div class="card">
-                  <p>This Movie Is About: ${watchlist[i].description}</p>
-              </div>
-              </hr>
-              <div class="card">  
-                  <p>Popularity Score: ${watchlist[i].popularity}</p>
-              </div>  
-              <div class="card">
-                  <p>Voter Average: ${watchlist[i].voteAvg} </p>
-              </div>
-              </hr>
-              <div class="card">
-                  <p>Rating: ${watchlist[i].voteAvg}</p>
-              </div>
-              </hr>
-              <div class="card">
-                  <p>Release Date: ${watchlist[i].releaseDate}</p>
-              </div>
-              <div class="card">
-                  <p>Move or Show?: ${watchlist[i].movieOrShow}</p>
-              </div>
-              <div class="card">
-                  <p>Genre: ${watchlist[i].genre}</p>
-              </div>
-          </aside>`;
+          <div class="row gradientBg text-white">
+            <div class="col-5 p-0">
+                <img class="p-0 ml-3" src="http://image.tmdb.org/t/p/w400${watchlist[i].image}"/>
+             </div>
+            <div class="col-5 searchModal p-0 ml-5">
+              <p>${watchlist[i].description}</p>
+              <p>Country: ${watchlist[i].country} </p>
+              <p>Popularity Score: ${watchlist[i].popularity}</p>
+              <p>Vote: ${watchlist[i].voteAvg}/10</p>
+              <p>Release Date: ${watchlist[i].releaseDate}</p>
+              <p>Media Type: ${watchlist[i].movieOrShow}</p>
+              <iframe id="ytplayer" type="text/html" width="520" height="350" src=${watchlist[i].trailer}frameborder="0"></iframe>
+          </div>
+        </div>`;
+        //       <h2 class="text-center col-4">${watchlist[i].listTitle}</h2>
+        //       <section class="col-sm-4">
+        //       <figure class="card" id="moviePoster">
+        //       <img class="p-0 ml-3" src="http://image.tmdb.org/t/p/w400${watchlist[i].image}"/>
+        //       </figure>
+        //       </section>
+        //       <aside class="col-sm-8">
+        //       <div class="card">
+        //           <p>This Movie Is About: ${watchlist[i].description}</p>
+        //       </div>
+        //       </hr>
+        //       <div class="card">  
+        //           <p>Popularity Score: ${watchlist[i].popularity}</p>
+        //       </div>  
+        //       <div class="card">
+        //           <p>Voter Average: ${watchlist[i].voteAvg} </p>
+        //       </div>
+        //       </hr>
+        //       <div class="card">
+        //           <p>Rating: ${watchlist[i].voteAvg}</p>
+        //       </div>
+        //       </hr>
+        //       <div class="card">
+        //           <p>Release Date: ${watchlist[i].releaseDate}</p>
+        //       </div>
+        //       <div class="card">
+        //           <p>Move or Show?: ${watchlist[i].movieOrShow}</p>
+        //       </div>
+        //       <div class="card">
+        //           <p>Genre: ${watchlist[i].genre}</p>
+        //       </div>
+        //   </aside>`;
+        
         }
-        let watchListHtml = `
-          <section class="row">
-            ${listings}
-          </section>
-          `;
-        $("#watchListModal").html(watchListHtml);
+        // let watchListHtml = `
+        //   <section class="row">
+        //     ${listings}
+        //   </section>
+        //   `;
+        $("#watchListModal").html(listings);
     };
 
     function getGenres() {
