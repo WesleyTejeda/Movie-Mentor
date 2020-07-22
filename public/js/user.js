@@ -19,10 +19,11 @@ $(document).ready(async function() {
     var watchListBtn = $("#watchListBtn");
     var watchListSpan = $("#watchListSpan");
     watchListBtn.on("click", function () {
-    watchListModal.css("display", "block");
-    $.get("/api/watchlist").then(watchlist => {
-        getWatchListData(watchlist);
-    })  
+        watchListModal.css("display", "block");
+        $.get("/api/watchlist").then(watchlist => {
+            console.log(watchlist);
+            getWatchListData(watchlist);
+        })  
     });
     watchListSpan.on("click", function () {
         $(".modal-backdrop").css("display","none");
@@ -61,6 +62,12 @@ $(document).ready(async function() {
             console.log(result);
             // let genre = result.genre_ids;
             // genre.forEach()
+            let country = "N/A";
+            if(result.origin_country){
+                if(typeof(result.origin_country === "object"))
+                    country = result.origin_country[0];
+                else country = result.origin_country;
+            }
             let searchObj = {
                 listTitle: (result.original_name || result.original_title),
                 image: result.poster_path,
@@ -71,7 +78,7 @@ $(document).ready(async function() {
                 genre: result.genre_ids[0],
                 voteAvg: result.vote_average,
                 movieId: result.id,
-                country: (result.origin_country || "N/A")
+                country: (country)
             };
             console.log(searchObj);
             let type = result.media_type;
@@ -95,7 +102,7 @@ $(document).ready(async function() {
                     <p>Media Type: ${searchObj.movieOrShow}</p>
                     <button class="watchlistBtn"><i class="fas fa-plus"></i> Add to Watchlist</button>
                     <iframe id="ytplayer" type="text/html" width="640" height="360"
-                    src="https://www.youtube.com/embed/${videoSrc}?autoplay=1"
+                    src="https://www.youtube.com/embed/${videoSrc}?autoplay=0"
                     frameborder="0"></iframe>
                 </div>
             </div>
@@ -122,7 +129,9 @@ $(document).ready(async function() {
                 if ($(this).html() === "Title Added"){
                     return;
                 }
-                console.log(searchObj);
+                let saveObj = {
+                    listTitle: searchObj.listTitle
+                }
                 $.post("/api/watchlist", searchObj);
                 $(this).css("background-color","blue");
                 $(this).html("Title Added");
