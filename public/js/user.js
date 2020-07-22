@@ -19,11 +19,10 @@ $(document).ready(async function() {
     var watchListBtn = $("#watchListButton");
     var watchListSpan = $("#watchListSpan");
     watchListBtn.on("click", function () {
-        watchListModal.css("display", "block");
-        $.get("/api/watchlist").then(watchlist => {
-            console.log(watchlist);
-            getWatchListData(watchlist);
-        })  
+    watchListModal.css("display", "block");
+    $.get("/api/watchlist").then(watchlist => {t
+        getWatchListData(watchlist);
+    })  
     });
     watchListSpan.on("click", function () {
         $(".modal-backdrop").css("display","none");
@@ -108,12 +107,12 @@ $(document).ready(async function() {
                     <img class="p-0 ml-3" src="http://image.tmdb.org/t/p/w400${searchObj.image}"/>
                 </div>
                 <div class="col-5 searchModal p-0 ml-5">
-                    <p>${searchObj.description}</p>
-                    <p>Country: ${searchObj.country} </p>
-                    <p>Popularity Score: ${searchObj.popularity}</p>
-                    <p>Vote: ${searchObj.voteAvg}/10</p>
-                    <p>Release Date: ${searchObj.releaseDate}</p>
-                    <p>Media Type: ${searchObj.movieOrShow}</p>
+                    <p class="innerText">${searchObj.description}</p>
+                    <p class="innerText">Country: ${searchObj.country} </p>
+                    <p class="innerText">Popularity Score: ${searchObj.popularity}</p>
+                    <p class="innerText">Vote: ${searchObj.voteAvg}/10</p>
+                    <p class="innerText">Release Date: ${searchObj.releaseDate}</p>
+                    <p class="innerText">Media Type: ${searchObj.movieOrShow}</p>
                     <button class="watchlistBtn"><i class="fas fa-plus"></i> Add to Watchlist</button>
                     <iframe id="ytplayer" type="text/html" width="640" height="360"
                     src="https://www.youtube.com/embed/${videoSrc}?autoplay=0"
@@ -209,13 +208,12 @@ $(document).ready(async function() {
         //           <p>Genre: ${watchlist[i].genre}</p>
         //       </div>
         //   </aside>`;
-        
-        }
         // let watchListHtml = `
         //   <section class="row">
         //     ${listings}
         //   </section>
         //   `;
+        }
         $("#watchListModal").html(listings);
     };
 
