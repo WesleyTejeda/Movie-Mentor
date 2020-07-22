@@ -58,31 +58,7 @@
 
 
 </header>
-<div class="card w-100 col-1 abs darkBg">
-        <h3 class="text-white">Sections</h3>
-        <select>
-            <option value="1">Trending</option>
-            <option value="2">Discover Movies</option>
-            <option value="3">Discover Tv</option>
-            <option value="4">Top Rated Movies</option>
-            <option value="5">Upcoming Movies</option>
-        </select>
-         <h3 class="text-white">Movies</h3>
-        <select>
-            <option>-------</option>
-            {{#each genreMovie}}
-            <option value="{{id}}">{{name}}</option>
-            {{/each}}
-        </select>
-        <h3 class="text-white">Tv</h3>
-        <select>
-            <option>-------</option>
-            {{#each genreTv}}
-            <option value="{{id}}">{{name}}</option>
-            {{/each}}
-        </select>
-    </div>
-<main class="card-group container d-flex" id="cardGroup"
+<main class=" backgroundTwo card-group" id="cardGroup"
     style="width: 90%; height: auto; margin: 0 auto; float: none; margin-top: 20px;">
     <div id="myModal" class="modal">
         <div class="modal-content">
