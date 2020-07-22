@@ -35,4 +35,16 @@ module.exports = function(app){
          res.status(501).json({message: err});
      });
    })
+
+   app.delete("/api/watchlist", (req, res) => {
+     db.Watchlist.destroy({
+       where: {
+         listTitle: req.body.listTitle
+       }
+     }).then(response => {
+        resstatus(200).json({message: "Title removed"});
+     }).catch(err => {
+         res.status(501).json({message: err});
+     });
+   })
 }

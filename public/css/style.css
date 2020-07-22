@@ -40,7 +40,7 @@ p{
 
 
 .text-white {
-    color: white;
+    color: white !important;
 }
 
 
@@ -171,6 +171,11 @@ p{
   }
 
 
+  .card-text {
+    color: white;
+    background-color: lightslategray;
+    height: 50px;
+
   #ytplayer {
       width: 110%;
   }
@@ -207,3 +212,11 @@ p{
     height: 100%;
   }
 
+  .remove {
+    background-color: red;
+    color: white;
+  }
+
+  .searchModal p {
+    color:white;
+  }

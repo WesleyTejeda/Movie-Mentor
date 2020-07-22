@@ -2,6 +2,8 @@
 const express = require("express");
 const app = express();
 let PORT = process.env.PORT || 8080;
+const fs = require("fs");
+const path = require("path");
 //Using handlebars
 var exphbs = require("express-handlebars");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
