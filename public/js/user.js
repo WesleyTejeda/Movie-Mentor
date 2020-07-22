@@ -61,6 +61,12 @@ $(document).ready(async function() {
             console.log(result);
             // let genre = result.genre_ids;
             // genre.forEach()
+            let country = "N/A";
+            if(result.origin_country){
+                if(typeof(result.origin_country === "object"))
+                    country = result.origin_country[0];
+                else country = result.origin_country;
+            }
             let searchObj = {
                 listTitle: (result.original_name || result.original_title),
                 image: result.poster_path,
@@ -71,7 +77,7 @@ $(document).ready(async function() {
                 genre: result.genre_ids[0],
                 voteAvg: result.vote_average,
                 movieId: result.id,
-                country: (result.origin_country || "N/A")
+                country: (country)
             };
             console.log(searchObj);
             let type = result.media_type;
@@ -87,15 +93,15 @@ $(document).ready(async function() {
                     <img class="p-0 ml-3" src="http://image.tmdb.org/t/p/w400${searchObj.image}"/>
                 </div>
                 <div class="col-5 searchModal p-0 ml-5">
-                    <p>${searchObj.description}</p>
-                    <p>Country: ${searchObj.country} </p>
-                    <p>Popularity Score: ${searchObj.popularity}</p>
-                    <p>Vote: ${searchObj.voteAvg}/10</p>
-                    <p>Release Date: ${searchObj.releaseDate}</p>
-                    <p>Media Type: ${searchObj.movieOrShow}</p>
+                    <p class="innerText">${searchObj.description}</p>
+                    <p class="innerText">Country: ${searchObj.country} </p>
+                    <p class="innerText">Popularity Score: ${searchObj.popularity}</p>
+                    <p class="innerText">Vote: ${searchObj.voteAvg}/10</p>
+                    <p class="innerText">Release Date: ${searchObj.releaseDate}</p>
+                    <p class="innerText">Media Type: ${searchObj.movieOrShow}</p>
                     <button class="watchlistBtn"><i class="fas fa-plus"></i> Add to Watchlist</button>
                     <iframe id="ytplayer" type="text/html" width="640" height="360"
-                    src="https://www.youtube.com/embed/${videoSrc}?autoplay=1"
+                    src="https://www.youtube.com/embed/${videoSrc}?autoplay=0"
                     frameborder="0"></iframe>
                 </div>
             </div>
@@ -122,7 +128,9 @@ $(document).ready(async function() {
                 if ($(this).html() === "Title Added"){
                     return;
                 }
-                console.log(searchObj);
+                let saveObj = {
+                    listTitle: searchObj.listTitle
+                }
                 $.post("/api/watchlist", searchObj);
                 $(this).css("background-color","blue");
                 $(this).html("Title Added");
@@ -148,28 +156,28 @@ $(document).ready(async function() {
               </section>
               <aside class="col-sm-8">
               <div class="card">
-                  <p>This Movie Is About: ${watchlist[i].description}</p>
+                  <p class="innerText">This Movie Is About: ${watchlist[i].description}</p>
               </div>
               </hr>
               <div class="card">  
-                  <p>Popularity Score: ${watchlist[i].popularity}</p>
+                  <p class="innerText">Popularity Score: ${watchlist[i].popularity}</p>
               </div>  
               <div class="card">
-                  <p>Voter Average: ${watchlist[i].voteAvg} </p>
+                  <p class="innerText">Voter Average: ${watchlist[i].voteAvg} </p>
               </div>
               </hr>
               <div class="card">
-                  <p>Rating: ${watchlist[i].voteAvg}</p>
+                  <p class="innerText">Rating: ${watchlist[i].voteAvg}</p>
               </div>
               </hr>
               <div class="card">
-                  <p>Release Date: ${watchlist[i].releaseDate}</p>
+                  <p class="innerText">Release Date: ${watchlist[i].releaseDate}</p>
               </div>
               <div class="card">
-                  <p>Move or Show?: ${watchlist[i].movieOrShow}</p>
+                  <p class="innerText">Move or Show?: ${watchlist[i].movieOrShow}</p>
               </div>
               <div class="card">
-                  <p>Genre: ${watchlist[i].genre}</p>
+                  <p class="innerText">Genre: ${watchlist[i].genre}</p>
               </div>
           </aside>`;
         }
