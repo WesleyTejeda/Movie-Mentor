@@ -38,7 +38,7 @@ p{
 }
 
 .text-white {
-    color: white;
+    color: white !important;
 }
 
 
@@ -160,9 +160,6 @@ p{
     box-shadow: 0px 2px 26px 15px rgba(53,148,113,1);
   }
 
-<<<<<<< HEAD
-  
-=======
   .card-text {
     color: white;
     background-color: lightslategray;
@@ -175,4 +172,12 @@ p{
     left: 60px;
     min-width: 10vw;
   }
->>>>>>> 4e6200cc9cb080d6ccecef464e8fcbe9242b2bac
+
+  .remove {
+    background-color: red;
+    color: white;
+  }
+
+  .searchModal p {
+    color:white;
+  }

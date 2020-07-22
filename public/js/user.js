@@ -19,10 +19,10 @@ $(document).ready(async function() {
     var watchListBtn = $("#watchListButton");
     var watchListSpan = $("#watchListSpan");
     watchListBtn.on("click", function () {
-    watchListModal.css("display", "block");
-    $.get("/api/watchlist").then(watchlist => {t
-        getWatchListData(watchlist);
-    })  
+        watchListModal.css("display", "block");
+        $.get("/api/watchlist").then(watchlist => {
+            getWatchListData(watchlist);
+        })  
     });
     watchListSpan.on("click", function () {
         $(".modal-backdrop").css("display","none");
@@ -31,9 +31,18 @@ $(document).ready(async function() {
 
     $("select").on("change", function() {
         let value = $(this).val();
+        // let text = $(this).html();
         console.log(value);
-        $.post("/user", {value}).then(response => {
+        $.post("/user/query", {value}).then(response => {
             console.log(response);
+            // $("#queryTitle").html()
+            appendNewData(response);
+            $(".searchThis").on("click", function() {
+                console.log("clicked");
+                modal.css("display", "block");
+                let title = $(this).data("title");
+                getData(title);
+            })
         })
     })
 
@@ -166,14 +175,15 @@ $(document).ready(async function() {
             <div class="col-5 p-0">
                 <img class="p-0 ml-3" src="http://image.tmdb.org/t/p/w400${watchlist[i].image}"/>
              </div>
-            <div class="col-5 searchModal p-0 ml-5">
-              <p>${watchlist[i].description}</p>
-              <p>Country: ${watchlist[i].country} </p>
-              <p>Popularity Score: ${watchlist[i].popularity}</p>
-              <p>Vote: ${watchlist[i].voteAvg}/10</p>
-              <p>Release Date: ${watchlist[i].releaseDate}</p>
-              <p>Media Type: ${watchlist[i].movieOrShow}</p>
-              <iframe id="ytplayer" type="text/html" width="520" height="350" src=${watchlist[i].trailer}frameborder="0"></iframe>
+            <div class="col-5 searchModal p-0 ml-5 text-white">
+                <button class="remove" data-title="${watchlist[i].listTitle}"><i class="far fa-trash-alt"></i> Remove From Watchlist</button>
+                <p>${watchlist[i].description}</p>
+                <p>Country: ${watchlist[i].country} </p>
+                <p>Popularity Score: ${watchlist[i].popularity}</p>
+                <p>Vote: ${watchlist[i].voteAvg}/10</p>
+                <p>Release Date: ${watchlist[i].releaseDate}</p>
+                <p>Media Type: ${watchlist[i].movieOrShow}</p>
+                <iframe id="ytplayer" type="text/html" width="520" height="350" src=${watchlist[i].trailer}frameborder="0"></iframe>
           </div>
         </div>`;
         //       <h2 class="text-center col-4">${watchlist[i].listTitle}</h2>
@@ -215,7 +225,35 @@ $(document).ready(async function() {
         //   `;
         }
         $("#watchListModal").html(listings);
+        $(".remove").on("click", function() {
+            if($(this).html() === "Removed"){
+                return;
+            }
+            else {
+                $(this).css("background-color", "gray");
+                $(this).css("color", "black");
+                $(this).html("Removed");
+                let title = $(this).data("title");
+                $.ajax({
+                    url: "/api/watchlist",
+                    method: "DELETE",
+                    data: {listTitle: title}
+                }).then(response => {
+                    console.log(response);
+                })
+            }
+        })
     };
+    function appendNewData(response) {
+        $("#appendListings").empty();
+        let newHtml = ``;
+        for(let i=0; i < response.listings.length; i++) {
+            newHtml += `<figure class="card-body col-2 p-0 m-3">
+            <img class="card-img pb-1 borderedRound searchThis" data-title="${response.listings[i].listTitle}" src="http://image.tmdb.org/t/p/w200${response.listings[i].image}" alt="Poster of ${response.listings[i].listTitle}">
+        </figure>`
+        }
+        $("#appendListings").html(newHtml);
+    }
 
     function getGenres() {
         return new Promise(resolve => {
@@ -250,7 +288,7 @@ $(document).ready(async function() {
                     recommendedHtml += 
                     `<div class="card-body col-3 p-0 ">
                         <img class="ml-3 mt-3 center recommended" src="http://image.tmdb.org/t/p/w185${results.results[i].poster_path}" data-title="${title}"/>
-                        <p class="text-center w-100">${title}</p>
+                        <p class="text-center w-100 text-white">${title}</p>
                     </div>`;
                 }
                 resolve(recommendedHtml);

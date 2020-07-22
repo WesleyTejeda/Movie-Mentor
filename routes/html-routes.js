@@ -2,6 +2,8 @@
 // const path = require("path");
 const authentication = require("../config/authenticated/authentication");
 const axios = require('axios');
+const fs = require("fs");
+const path = require("path");
 const { query } = require("express");
 //Build html routes
 
@@ -42,7 +44,7 @@ module.exports = function(app){
     });
     
     //User sends value through select, render the page that corresponds
-    app.post("/user", authentication, async (req, res) => {
+    app.post("/user/query", authentication, async (req, res) => {
         console.log(req.body);
         let genreList = await getGenres();
         let listingArray = [];
@@ -58,53 +60,57 @@ module.exports = function(app){
         switch (req.body.value){
             case "A": 
                 listingArray = await multiData(trendingQuery);
-                respond()
+                respond(listingArray)
                 break;
             case "B": 
                 listingArray = await multiData(discoverMovieQuery);
-                respond()
+                respond(listingArray)
                 break;
             case "C": 
                 listingArray = await multiData(discoverTvQuery);
-                respond()
+                respond(listingArray)
                 break;
             case "D": 
                 listingArray = await multiData(topQuery);
-                respond()
+                respond(listingArray)
                 break;
-            case "F": 
+            case "E": 
                 listingArray = await multiData(upcomingQuery);
-                respond()
+                respond(listingArray)
                 break;
         }
         console.log(listingArray);
         //Check if either movie or tv changed
         //Movie
-        let genreQuery = "https://api.themoviedb.org/3/discover/movie?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=";
+        let genreQuery = ``;
         let type = "";
-        for(let i=0; i < genreList[0]; i++){
-            if(genreList[0].id === req.body.value){
-                genreQuery += genreList[0].id;
+        for(let i=0; i < genreList[0].length; i++){
+            console.log(genreList[0][i]);
+            if(genreList[0][i].id == req.body.value){
+                console.log("match found");
                 type = "movie";
+                genreQuery = `https://api.themoviedb.org/3/discover/${type}?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US&sort_by=popularity.desc&page=1&timezone=America%2FNew_York&with_genres=${genreList[0][i].id}&include_null_first_air_dates=false`
                 console.log(genreQuery);
                 listingArray = await multiData(genreQuery);
-                respond()
+                respond(listingArray);
             }
         }
         //Tv
-        for(let i=0; i < genreList[1]; i++){
-            if(genreList[1].id === req.body.value){
-                genreQuery += genreList[0].id;
+        for(let i=0; i < genreList[1].length; i++){
+            if(genreList[1][i].id == req.body.value){
+                console.log("match found");
                 type = "tv";
+                genreQuery = `https://api.themoviedb.org/3/discover/${type}?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US&sort_by=popularity.desc&page=1&timezone=America%2FNew_York&with_genres=${genreList[0][i].id}&include_null_first_air_dates=false`
                 console.log(genreQuery);
                 listingArray = await multiData(genreQuery);
-                respond()
+                respond(listingArray);
             }
-            else res.status(500).json({message: "Search query not found. No refresh!"});
         }
-        console.log(listingArray);
-        function respond() {
-            res.status(200).render("user", {listings: listingArray, genreMovie: genreList[0], genreTv: genreList[1]});
+        //If not found
+        res.status(500).json({message: "Search query not found. No refresh!"});
+
+        function respond(listingArray) {
+            res.send({listings: listingArray, genreMovie: genreList[0], genreTv: genreList[1]});
         }
         function multiData(queryUrl) {
             return new Promise(resolve => {

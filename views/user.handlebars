@@ -65,7 +65,7 @@
             <option value="B">Discover Movies</option>
             <option value="C">Discover Tv</option>
             <option value="D">Top Rated Movies</option>
-            <option value="F">Upcoming Movies</option>
+            <option value="E">Upcoming Movies</option>
         </select>
          <h3 class="text-white">Movies</h3>
         <select>
@@ -82,44 +82,36 @@
             {{/each}}
         </select>
 </div>
-<main class="backgroundTwo container d-flex card-group" id="cardGroup"
-    style="width: 90%; height: auto; margin: 0 auto; float: none; margin-top: 20px;">
-    <div id="myModal" class="modal">
-        <div class="modal-content gradientBg">
-            <div class="modal-header w-100">
-                <span id="searchSpan"class="close">&times;</span>
-            </div>
-            <div id="searchModalBody" class="modal-body row text-white darkBg container-fluid">
+<main class="backgroundTwo d-flex card-group" id="cardGroup"
+    style=" height: auto; margin: 0 auto; float: none; padding-top: 20px;">
+    <div class="container">
+        <div id="myModal" class="modal">
+            <div class="modal-content gradientBg">
+                <div class="modal-header w-100">
+                    <span id="searchSpan"class="close">&times;</span>
+                </div>
+                <div id="searchModalBody" class="modal-body row text-white darkBg container-fluid">
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="watchListModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header w-100">
-                <span id="watchListSpan"class="close">&times;</span>
-            </div>
-            <div id="watchListModalBody" class="modal-body row text-white gradientBg container-fluid">
-            </div>
-        </div>
-    </div>
-
-    <div id="watchListModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header w-100">
-                <span id="watchListSpan"class="close">&times;</span>
-            </div>
-            <div id="watchListModalBody" class="modal-body row text-white gradientBg container-fluid">
+        <div id="watchListModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header w-100">
+                    <span id="watchListSpan"class="close">&times;</span>
+                </div>
+                <div id="watchListModalBody" class="modal-body row text-white gradientBg container-fluid">
+                </div>
             </div>
         </div>
-    </div>
-    
-    <h2 class="text-center col">Trending</h2>
-    <div class="row d-flex justify-content-center">
-    {{#each listings}}
-        <figure class="card-body col-2 p-0 m-3">
-            <img class="card-img pb-1 borderedRound searchThis" data-title="{{listTitle}}" src="http://image.tmdb.org/t/p/w200{{image}}" alt="Photo of {{listTitle}}">
-        </figure>
-    {{/each}}
+        
+        <h2 id="queryTitle" class="text-center col">Trending</h2>
+        <div id="appendListings" class="row d-flex justify-content-center">
+        {{#each listings}}
+            <figure class="card-body col-2 p-0 m-3">
+                <img class="card-img pb-1 borderedRound searchThis" data-title="{{listTitle}}" src="http://image.tmdb.org/t/p/w200{{image}}" alt="Photo of {{listTitle}}">
+            </figure>
+        {{/each}}
+        </div>
     </div>
 </main>
