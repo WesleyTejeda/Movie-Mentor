@@ -21,7 +21,7 @@ $(document).ready(async function () {
   var watchListSpan = $("#watchListSpan");
   watchListBtn.on("click", function () {
     watchListModal.css("display", "block");
-    $.get("/api/watchlist").then(watchlist => {
+    $.get("/api/watchlist").then(watchlist => {t
         getWatchListData(watchlist);
     })  
 });

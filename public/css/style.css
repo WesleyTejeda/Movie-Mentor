@@ -1,7 +1,35 @@
 /* Styles */
+
+body, html, main {
+ height: 100%;
+}
+
+.backgroundOne{
+  background-image: url(../images/cinemawallpaper.png);
+  background-size: cover;
+  height: 100%;
+}
+
+.backgroundTwo{
+  background-image: url(../images/hi-tech-technology-projector-katushki-kinoplenka-movie-retro.jpg);
+  background-size: cover;
+  height: 100%;
+}
+
+.card-title {
+  color: white;
+}
+
+p{
+  color: black;
+  ;
+
+}
+
 .text-white {
     color: white;
 }
+
 
 .float-left {
     float: left;
@@ -16,6 +44,13 @@
     margin-left: auto;
     margin-right: auto;
   }
+
+.card {
+  background-image: url(../images/blue-wallpaper-2680270.jpg);
+  background-size: cover;
+  text-decoration-color: white;
+  opacity: 0.8;
+}
 
 .modal {
     display: none;
@@ -107,3 +142,5 @@
   .watchlistBtn:hover {
     box-shadow: 0px 2px 26px 15px rgba(53,148,113,1);
   }
+
+  
