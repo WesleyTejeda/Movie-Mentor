@@ -50,6 +50,11 @@ p{
     background-color: black;
 }
 
+.gradientBg {
+  background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(16,16,36,1) 35%, rgba(0,212,255,1) 100%);
+}
+
 .center {
     display: block;
     margin-left: auto;
@@ -78,7 +83,7 @@ p{
    
   .modal-content {
     position: relative;
-    background-color: #fefefe;
+    background-color: white;
     margin: auto;
     padding: 0;
     border: 1px solid #888;
@@ -123,6 +128,7 @@ p{
   .modal-body {
     padding: 2px 16px;
     height: 100%;
+    width: 100%;
   }
 
   .modal-body1 {
