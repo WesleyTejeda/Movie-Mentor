@@ -2,7 +2,6 @@ $(document).ready(async function() {
     let searchForm = $("#searchForm");
     let inputField = $("#inputField");
     let genreList = await getGenres();
-    console.log(genreList);
 
     //Search Modal
     var modal = $("#myModal");
@@ -17,17 +16,17 @@ $(document).ready(async function() {
     //WatchList Modal
     var watchListModal = $("#watchListModal");
 
-    var watchListBtn = $("#watchListBtn");
+    var watchListBtn = $("#watchListButton");
     var watchListSpan = $("#watchListSpan");
     watchListBtn.on("click", function () {
         watchListModal.css("display", "block");
         $.get("/api/watchlist").then(watchlist => {
+            console.log(watchlist);
             getWatchListData(watchlist);
         })  
     });
     watchListSpan.on("click", function () {
         $(".modal-backdrop").css("display","none");
-
         watchListModal.css("display", "none");
     });
 
@@ -86,9 +85,6 @@ $(document).ready(async function() {
         }).then(async (results) => {
             let result = results.results[0];
             console.log(result);
-            // let genre = result.genre_ids;
-            // genre.forEach()
-
 
             let country = "N/A";
             if(result.origin_country){
@@ -133,7 +129,7 @@ $(document).ready(async function() {
                         <button class="watchlistBtn"><i class="fas fa-plus"></i> Add to Watchlist</button>
                         <div class="videoWrapper col-xs-8">
                             <iframe id="ytplayer" type="text/html"
-                            src="https://www.youtube.com/embed/${videoSrc}?autoplay=1"
+                            src="https://www.youtube.com/embed/${videoSrc}?autoplay=0"
                             frameborder="0"></iframe>
                         </div>
                     </div>
@@ -151,7 +147,6 @@ $(document).ready(async function() {
 
             $.get("/api/watchlist").then(results => {
                 console.log(results);
-
                 if(results.length !== 0){
                     for(let i=0; i < results.length; i++){
                         if(results[i].listTitle === searchObj.listTitle){
@@ -181,10 +176,10 @@ $(document).ready(async function() {
         getData(search);
     });
     const getWatchListData = (watchlist) => {
+        console.log(watchlist);
         let listings = ``;
         for (let i = 0; i < watchlist.length; i++) {
           listings += `
-
           <div class="row gradientBg text-white">
             <div class="col-5 p-0">
                 <img class="p-0 ml-3" src="http://image.tmdb.org/t/p/w400${watchlist[i].image}"/>
@@ -200,43 +195,6 @@ $(document).ready(async function() {
                 <iframe id="ytplayer" type="text/html" width="520" height="350" src=${watchlist[i].trailer}frameborder="0"></iframe>
           </div>
         </div>`;
-        //       <h2 class="text-center col-4">${watchlist[i].listTitle}</h2>
-        //       <section class="col-sm-4">
-        //       <figure class="card" id="moviePoster">
-        //       <img class="p-0 ml-3" src="http://image.tmdb.org/t/p/w400${watchlist[i].image}"/>
-        //       </figure>
-        //       </section>
-        //       <aside class="col-sm-8">
-        //       <div class="card">
-        //           <p>This Movie Is About: ${watchlist[i].description}</p>
-        //       </div>
-        //       </hr>
-        //       <div class="card">  
-        //           <p>Popularity Score: ${watchlist[i].popularity}</p>
-        //       </div>  
-        //       <div class="card">
-        //           <p>Voter Average: ${watchlist[i].voteAvg} </p>
-        //       </div>
-        //       </hr>
-        //       <div class="card">
-        //           <p>Rating: ${watchlist[i].voteAvg}</p>
-        //       </div>
-        //       </hr>
-        //       <div class="card">
-        //           <p>Release Date: ${watchlist[i].releaseDate}</p>
-        //       </div>
-        //       <div class="card">
-        //           <p>Move or Show?: ${watchlist[i].movieOrShow}</p>
-        //       </div>
-        //       <div class="card">
-        //           <p>Genre: ${watchlist[i].genre}</p>
-        //       </div>
-        //   </aside>`;
-        // let watchListHtml = `
-        //   <section class="row">
-        //     ${listings}
-        //   </section>
-        //   `;
         }
         $("#watchListModal").html(listings);
         $(".remove").on("click", function() {
