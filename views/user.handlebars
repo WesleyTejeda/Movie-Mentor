@@ -4,6 +4,9 @@
         <span class="navbar-brand mb-0 h1 p-1">
             <h2 class="text-light border-0 ml-5">Your Personal Movie Mentor!</h2>
         </span>
+         <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         <section id="formContainer" class="container text-center justify-content-center">
             <form id="searchForm" class="form-inline">
                 <div class="input-group">
@@ -18,16 +21,14 @@
         </section>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item mt-2">
+                    <h3 id="userName" class="username">{{username}}</h3>
+                </li>
                 <li>
                     <button type="button" class="btn btn-info btn-lg p-1 m-2" data-toggle="modal"
                         data-target="#watchListModal" id="watchListButton">Watchlist</button>
                 </li>
             </ul>
-
-            <li class="nav-item mt-3">
-                <button id="userNameBtn">Username</button>
-            </li>
-
             <li>
                 <button type="button" class="btn btn-info btn-lg p-1 m-2" data-toggle="modal"
                     data-target="#logoutModal">Logout</button>
@@ -53,30 +54,6 @@
         </div>
     </nav>
 </header>
-<div class="card w-100 col-1 abs darkBg">
-        <h3 class="text-white">Sections</h3>
-        <select>
-            <option value="A">Trending</option>
-            <option value="B">Discover Movies</option>
-            <option value="C">Discover Tv</option>
-            <option value="D">Top Rated Movies</option>
-            <option value="E">Upcoming Movies</option>
-        </select>
-         <h3 class="text-white">Movies</h3>
-        <select>
-            <option value="">-------</option>
-            {{#each genreMovie}}
-            <option value="{{id}}">{{name}}</option>
-            {{/each}}
-        </select>
-        <h3 class="text-white">Tv</h3>
-        <select>
-            <option value="">-------</option>
-            {{#each genreTv}}
-            <option value="{{id}}">{{name}}</option>
-            {{/each}}
-        </select>
-</div>
 <main class="backgroundTwo d-flex card-group" id="cardGroup"
     style=" height: auto; margin: 0 auto; float: none; padding-top: 20px;">
     <div class="container">
@@ -100,7 +77,34 @@
             </div>
         </div>
         
-        <h2 id="queryTitle" class="text-center col">Trending</h2>
+        <div class="col-12 ml-3 mr-3 card darkBg">
+            <div class="col-4">
+                <h3 class="text-white">Sections</h3>
+                <select>
+                    <option value="A">Trending</option>
+                    <option value="B">Discover Movies</option>
+                    <option value="C">Discover Tv</option>
+                    <option value="D">Top Rated Movies</option>
+                    <option value="E">Upcoming Movies</option>
+                </select>
+            </div>
+            <div class="col-4">
+                <h3 class="text-white">Movies</h3>
+                <select>
+                    <option value="">-------</option>
+                    {{#each genreMovie}}
+                    <option value="{{id}}">{{name}}</option>
+                    {{/each}}
+                </select>
+                <h3 class="text-white">Tv</h3>
+                <select>
+                    <option value="">-------</option>
+                    {{#each genreTv}}
+                    <option value="{{id}}">{{name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
         <div id="appendListings" class="row d-flex justify-content-center">
         {{#each listings}}
             <figure class="card-body col-2 p-0 m-3">

@@ -64,18 +64,18 @@ p{
     margin-right: auto;
   }
 
-  #indexCard{
+#indexCard{
     background-image: url(../images/blue-wallpaper-2680270.jpg);
     background-size: cover;
     text-decoration-color: white;
     opacity: 0.8;
-  }
+}
   
 .card {
- 
+  
+  background: rgba(255, 255, 255, 0);   
   background-size: cover;
-  text-decoration-color: white;
-  opacity: 0.8;
+  text-decoration-color: white; 
 }
 
 
@@ -225,4 +225,15 @@ p{
 
   .searchModal p {
     color:white;
+  }
+
+  .username {
+    border: white;
+    border-radius: 3px;
+    color: white;
+    margin-right: 10px;
+  }
+
+  ul,li {
+    list-style: none;
   }
