@@ -58,12 +58,32 @@
 
 
 </header>
-<main class="card-group" id="cardGroup"
+<div class="card w-100 col-1 abs darkBg">
+        <h3 class="text-white">Sections</h3>
+        <select>
+            <option value="1">Trending</option>
+            <option value="2">Discover Movies</option>
+            <option value="3">Discover Tv</option>
+            <option value="4">Top Rated Movies</option>
+            <option value="5">Upcoming Movies</option>
+        </select>
+         <h3 class="text-white">Movies</h3>
+        <select>
+            <option>-------</option>
+            {{#each genreMovie}}
+            <option value="{{id}}">{{name}}</option>
+            {{/each}}
+        </select>
+        <h3 class="text-white">Tv</h3>
+        <select>
+            <option>-------</option>
+            {{#each genreTv}}
+            <option value="{{id}}">{{name}}</option>
+            {{/each}}
+        </select>
+    </div>
+<main class="card-group container d-flex" id="cardGroup"
     style="width: 90%; height: auto; margin: 0 auto; float: none; margin-top: 20px;">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, fugiat odit odio quod excepturi dolores natus.
-    Iste minus molestiae quod excepturi rem harum at saepe molestias. Odio veniam fugit ipsum? Lorem ipsum dolor sit
-    amet, consectetur adipisicing elit. Iusto, culpa consectetur ea aliquid voluptates labore inventore maxime minima
-    autem natus impedit provident repellendus temporibus ipsam nam, atque ratione itaque voluptas.
     <div id="myModal" class="modal">
         <div class="modal-content">
             <div class="modal-header w-100">
@@ -83,17 +103,13 @@
             </div>
         </div>
     </div>
-
+    
+    <h2 class="text-center col">Trending</h2>
+    <div class="row d-flex justify-content-center">
     {{#each listings}}
-    <div class="card border-dark mb-3 col" id="newCard" style="margin: 20px;">
-        <img src="https://via.placeholder.com/150" class="card-img-top" id="cardImage" alt="Placeholder">
-        <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                content.
-                This content is a little bit longer.</p>
-            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-        </div>
-    </div>
+        <figure class="card-body col-2 p-0 m-3">
+            <img class="card-img pb-1 borderedRound" src="http://image.tmdb.org/t/p/w200{{image}}" alt="Photo of {{listTitle}}">
+        </figure>
     {{/each}}
+    </div>
 </main>
