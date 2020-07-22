@@ -5,8 +5,10 @@ var db = require("../models");
 module.exports = function(app){
    //Save watchlist to DB 
    app.post("/api/watchlist", (req, res) => {
+
       req.body.UserId = req.session.userId;
       console.log(req.body, "watchlist post path");
+
       db.Watchlist.create(req.body).then((created) => {
          console.log(created);
          res.status(200).json({message: "Added to watchlist!"});
@@ -24,6 +26,7 @@ module.exports = function(app){
          },
       }).then(results => {
          if(results.length === 0){
+
             res.json({message: "No results"})
          }
          //returns all results in an array of objects

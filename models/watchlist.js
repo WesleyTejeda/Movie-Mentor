@@ -45,6 +45,7 @@ module.exports = function(sequelize, DataTypes) {
         trailer: {
             type: DataTypes.STRING,
             allowNull: true
+
         }
     })
 
@@ -56,6 +57,5 @@ module.exports = function(sequelize, DataTypes) {
             }
         });
     };
-
     return Watchlist;
 }

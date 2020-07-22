@@ -11,6 +11,8 @@ module.exports = function(app){
         res.render("index");
     })
     //On /user route return user.html
+
+
     app.get("/user", authentication, async (req, res) => {
         console.log(req.body);
         let genreList = await getGenres();
@@ -39,6 +41,7 @@ module.exports = function(app){
             }
             res.render("user", {listings: listingArray, genreMovie: genreList[0], genreTv: genreList[1]});
         })
+
     });
     
     //User sends value through select, render the page that corresponds
