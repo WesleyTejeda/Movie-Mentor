@@ -68,7 +68,7 @@ p{
     background-image: url(../images/blue-wallpaper-2680270.jpg);
     background-size: cover;
     text-decoration-color: white;
-    opacity: 0.8;
+    opacity: .95;
 }
   
 .card {
@@ -78,6 +78,9 @@ p{
   text-decoration-color: white; 
 }
 
+#indexCard {
+  margin-top: 100px;
+}
 
 .modal {
     display: none;
