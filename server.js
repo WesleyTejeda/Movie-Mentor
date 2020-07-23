@@ -31,7 +31,7 @@ const sessions = require("client-sessions");
 app.use(sessions({
     cookieName: "session",
     secret: process.env.cookieSecret,
-    duration: 20 * 60 * 1000 //20 minutes
+    duration: 120 * 60 * 1000 //120 minutes
 }))
 
 //Import routes HERE
