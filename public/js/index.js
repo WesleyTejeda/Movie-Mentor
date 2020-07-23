@@ -25,16 +25,14 @@ $(document).ready(function () {
         password: password,
       })
         .then(function (err, status, xhr) {
-          if(err.message === "Logged in"){
+          console.log(err, status, xhr);
+          if (err.message === "Logged in"){
             window.location.replace("/user")
-          }
-          else if(err.responseJSON.message){
-            $("#errorLogin").attr("style", "color: red;");
-            $("#errorLogin").html(err.responseJSON.message);
-            return;
           }
         })
         .catch(function (err) {
+          $("#errorLogin").attr("style", "color: red;");
+          $("#errorLogin").html(err.responseJSON.message);
         });
     }
     signUpForm.on("submit", function (event) {
