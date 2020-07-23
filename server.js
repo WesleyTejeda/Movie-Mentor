@@ -40,7 +40,7 @@ require("./routes/watchlist-api-routes")(app);
 require("./routes/user-api-routes")(app);
 
 //Listening on port
-db.sequelize.sync({force: true}).then(function() {
+db.sequelize.sync().then(function() {
     app.listen(PORT, function() {
         console.log("Server listening on: http://localhost:" + PORT);
     });
