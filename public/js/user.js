@@ -21,7 +21,6 @@ $(document).ready(async function() {
     watchListBtn.on("click", function () {
         watchListModal.css("display", "block");
         $.get("/api/watchlist").then(watchlist => {
-            console.log(watchlist);
             getWatchListData(watchlist);
         })  
     });
@@ -33,13 +32,10 @@ $(document).ready(async function() {
     $("select").on("change", function() {
         let value = $(this).val();
         // let text = $(this).html();
-        console.log(value);
         $.post("/user/query", {value}).then(response => {
-            console.log(response);
             // $("#queryTitle").html()
             appendNewData(response);
             $(".searchThis").on("click", function() {
-                console.log("clicked");
                 modal.css("display", "block");
                 let title = $(this).data("title");
                 getData(title);
@@ -48,7 +44,6 @@ $(document).ready(async function() {
     })
 
     $(".searchThis").on("click", function() {
-        console.log("clicked");
         modal.css("display", "block");
         let title = $(this).data("title");
         getData(title);
@@ -57,9 +52,7 @@ $(document).ready(async function() {
 
     $("#logout").on("click", function (event) {
         event.preventDefault();
-        console.log("LOG OUT");
         $.post("/logout").then(function (data, status, xhr) {
-            console.log(status, data, xhr.status);
             if (xhr.status === 200){
                 window.location.replace("/");
             }
@@ -69,7 +62,6 @@ $(document).ready(async function() {
     $("#userNameBtn").on("click", function (event) {
         event.preventDefault();
         $.get("/user", function () {
-            console.log("User Page");
         })
     })
 
@@ -84,7 +76,6 @@ $(document).ready(async function() {
             method: "GET"
         }).then(async (results) => {
             let result = results.results[0];
-            console.log(result);
 
             let country = "N/A";
             if(result.origin_country){
@@ -103,9 +94,8 @@ $(document).ready(async function() {
                 genre: result.genre_ids[0],
                 voteAvg: result.vote_average,
                 movieId: result.id,
-                country: (country)
+                country: (country || "N/A")
             };
-            console.log(searchObj);
             let type = result.media_type;
             let recommendedHtml = await getRecommended(type, result.id);
             let videoSrc = await getVideos(type, result.id);
@@ -136,17 +126,14 @@ $(document).ready(async function() {
                 </div>
             </div>    
             <div class="row">${recommendedHtml}</div>`;
-
+            $("#searchModalBody").empty();
             $("#searchModalBody").html(searchHtml);
             $(".recommended").on("click", function() {
-                console.log("clicked");
                 let title = $(this).data("title");
-                console.log(title);
                 getData(title);
             })
 
             $.get("/api/watchlist").then(results => {
-                console.log(results);
                 if(results.length !== 0){
                     for(let i=0; i < results.length; i++){
                         if(results[i].listTitle === searchObj.listTitle){
@@ -176,7 +163,6 @@ $(document).ready(async function() {
         getData(search);
     });
     const getWatchListData = (watchlist) => {
-        console.log(watchlist);
         let listings = ``;
         for (let i = 0; i < watchlist.length; i++) {
           listings += `
@@ -214,8 +200,6 @@ $(document).ready(async function() {
                     url: "/api/watchlist",
                     method: "DELETE",
                     data: {listTitle: title}
-                }).then(response => {
-                    console.log(response);
                 })
             }
         })
@@ -245,56 +229,30 @@ $(document).ready(async function() {
             $.get(`https://api.themoviedb.org/3/${type}/${id}/videos?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US`).then(results => {
                 let src = "";
                 for(let i=0; i < results.results.length; i++){
-                    if(results.results[i].type === "Trailer"){
+                    if(results.results[i].type === "Trailer" || "Teaser"){
                         src = results.results[i].key;
                         resolve(src);
                     }
                 }
+                resolve("");
             })
         })
-        
     }
 
     function getRecommended(type, id) {
         return new Promise(resolve => {
             $.get(`https://api.themoviedb.org/3/${type}/${id}/recommendations?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US&page=1`).then(results => {
                 let recommendedHtml = `<h2 class="text-center w-100 mt-5">Recommended Titles</h2>`;
-                for(let i=0; i < 8; i++) {
-                    let title = (results.results[i].original_name || results.results[i].original_title);
+                for(let i=0; i < results.results.length && i < 8; i++) {
+                    let title = results.results[i].original_title || results.results[i].original_name;
                     recommendedHtml += 
                     `<div class="card-body col-3 p-0 ">
                         <img class="ml-6 mt-3 mb-3 center recommended" src="http://image.tmdb.org/t/p/w185${results.results[i].poster_path}" data-title="${title}"/>
                         <p class="text-center w-100 text-white">${title}</p>
-
                     </div>`;
                 }
                 resolve(recommendedHtml);
             })
         })
     }
-
-    
 });
-
-// renderResults = (newMovieData) => {
-//     newCard = ("#newCard");
-//     $("#cardGroup").append(newCard);
-//     var newImage = $("<img>");
-//     newImage.attr("src", newMovieData.image);
-//     newImage.attr("alt", "Movie Image");
-//     $("#cardImage").append(newImage);
-//     newCard.append("#cardImage");
-//     var title = `<p><strong>Title: </strong>${newMovieData.resultTitle}</p>`;
-//     newCard.append(title);
-//     var popularity = `<p><strong>Rating: </strong>${newMovieData.popularity}</p>`;
-//     newCard.append(popularity);
-//     var description = `<p><strong>Summary: </strong>${newMovieData.description}</p>`;
-//     newCard.append(description);
-//     var releaseDate = `<p><strong>Released: </strong>${newMovieData.releaseDate}</p>`;
-//     newCard.append(releaseDate);
-//     var type = `<p><strong>Movie/TV Show: </strong>${newMovieData.movieOrShow}</p>`;
-//     newCard.append(type);
-//     var genre = `<p><strong>Genre: </strong>${newMovieData.genre}</p>`;
-//     newCard.append(genre);
-
-// };
