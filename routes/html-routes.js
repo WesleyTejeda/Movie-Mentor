@@ -27,7 +27,13 @@ module.exports = function(app){
                     axios.get("https://api.themoviedb.org/3/genre/tv/list?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US").then(genres => {
                     genreList.push(genres.data.genres);
                     resolve(genreList);
+                    }).catch(err => {
+                        if (err)
+                        res.status(501).json(err);
                     })
+                }).catch(err => {
+                    if (err)
+                    res.status(501).json(err);
                 })
             })
         }
@@ -42,6 +48,9 @@ module.exports = function(app){
                 listingArray.push(obj);
             }
             res.render("user", {listings: listingArray, genreMovie: genreList[0], genreTv: genreList[1], username: req.session.username});
+        }).catch(err => {
+            if (err)
+            res.status(501).json(err);
         })
 
     });
@@ -140,7 +149,13 @@ module.exports = function(app){
                     axios.get("https://api.themoviedb.org/3/genre/tv/list?api_key=3699bcfd1aa3d5642b631dafd0a6d76e&language=en-US").then(genres => {
                     genreList.push(genres.data.genres);
                     resolve(genreList);
+                    }).catch(err => {
+                        if (err)
+                        res.status(501).json(err);
                     })
+                }).catch(err => {
+                    if (err)
+                    res.status(501).json(err);
                 })
             })
         }
