@@ -15,17 +15,13 @@ module.exports = function(app){
                 username: req.body.username
             }
         }).then(user => {
-            console.log(user);
-            console.log(user["password"]);
-            console.log(user.username);
-
             if (user === null)
                 res.status(500).json({message: "Could not find an account with that username or password. Please log in again with the correct credentials."});
             else {
                 //Compare hashed password to database hashed pw
                 let login = bcrypt.compareSync(req.body.password, user.password);
                 if(!login){
-                    res.json({message: "Incorrect password. Please re-enter credentials"})
+                    res.status(500).json({message: "Incorrect password. Please re-enter credentials"})
                 }
                 //Save session id
                 req.session.userId = user.id;

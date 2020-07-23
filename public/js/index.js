@@ -24,11 +24,17 @@ $(document).ready(function () {
         username: username,
         password: password,
       })
-        .then(function (data, status, xhr) {
-          window.location.replace("/user")
+        .then(function (err, status, xhr) {
+          if(err.message === "Logged in"){
+            window.location.replace("/user")
+          }
+          else if(err.responseJSON.message){
+            $("#errorLogin").attr("style", "color: red;");
+            $("#errorLogin").html(err.responseJSON.message);
+            return;
+          }
         })
         .catch(function (err) {
-          console.log(err);
         });
     }
     signUpForm.on("submit", function (event) {
@@ -37,7 +43,6 @@ $(document).ready(function () {
         username: registerName.val().trim(),
         password: registerPassword.val().trim(),
       };
-      console.log(userData);
       if (!userData.username || !userData.password) {
         return;
       }
@@ -54,10 +59,10 @@ $(document).ready(function () {
         .then(function (data, status, xhr) {
           window.location.replace("/user")
         })
-        .catch(handleLoginErr);
-    }
-    function handleLoginErr(err) {
-      $("#alert .msg").text(err.responseJSON);
-      $("#alert").fadeIn(500);
+        .catch(function(err) {
+          console.log(err);
+          $("#errorSignUp").attr("style", "color: red;")
+          $("#errorSignUp").html(err.responseJSON.message);
+        });
     }
   });
