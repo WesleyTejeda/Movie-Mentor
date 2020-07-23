@@ -46,7 +46,7 @@
   ## Contributing
 
   * [Christopher Turton](https://github.com/Turtando)
-  * [Wesley Tejada](https://github.com/WesleyTejeda)
+  * [Wesley Tejeda](https://github.com/WesleyTejeda)
   * [Joshua Homer](https://github.com/Jchomer90)
 
 
